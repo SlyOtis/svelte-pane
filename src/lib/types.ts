@@ -8,6 +8,6 @@ export type DraggableOptions = {
   min: number;
   /** Maximum value for the draggable property in px */
   max: number;
-  /** Placement of the draggable element within its parent */
+  /** Placement of the draggable element within its parent, default: 'right' */
   anchor?: "left" | "right" | "top" | "bottom";
 };
