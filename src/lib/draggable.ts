@@ -1,9 +1,11 @@
+import type {DraggableOptions} from "./types";
+
 /**
  * Svelte directive to make an element draggable
  * @param node The DOM element to make draggable
  * @param options Configuration options for the draggable behavior
  */
-export function draggable(
+export default function draggable(
   node: any,
   options: DraggableOptions = {
     property: "--sidebar-width",
