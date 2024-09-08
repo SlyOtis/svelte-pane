@@ -1,4 +1,4 @@
-import type {DraggableOptions} from "./types";
+import type { DraggableOptions } from "./types";
 
 /**
  * Svelte directive to make an element draggable
@@ -11,6 +11,7 @@ export default function draggable(
     property: "--sidebar-width",
     min: 100,
     max: 500,
+    anchor: "right",
   },
 ) {
   let startX = 0,
