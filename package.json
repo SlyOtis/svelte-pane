@@ -1,0 +1,55 @@
+{
+  "name": "sly-svelte-pane",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Create resizeable grid and popout panels for svelte",
+  "keywords": [
+    "svelte",
+    "router",
+    "location api",
+    "slyotis",
+    "sly",
+    "location"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SlyOtis/svelte-pane"
+  },
+  "homepage": "https://github.com/SlyOtis/svelte-pane",
+  "bugs": {
+    "url": "https://github.com/SlyOtis/svelte-pane/issues"
+  },
+  "author": "Martin Ottersland",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/sly-svelte-pane.umd.js",
+  "module": "./dist/sly-svelte-pane.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/sly-svelte-pane.es.js",
+      "require": "./dist/sly-svelte-pane.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json",
+    "bp": "pnpm build && pnpm publish"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.1.1",
+    "@tsconfig/svelte": "^5.0.4",
+    "svelte": "^4.2.18",
+    "svelte-check": "^3.8.5",
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1",
+    "vite-plugin-dts": "^4.2.1"
+  }
+}
