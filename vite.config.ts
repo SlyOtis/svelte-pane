@@ -12,9 +12,6 @@ export default defineConfig({
     }),
   ],
   build: {
-    sourcemap: true,
-    minify: false,
-    cssCodeSplit: false,
     lib: {
       entry: path.resolve(__dirname, "src/lib/index.ts"),
       name: "sly-svelte-pane",
@@ -27,8 +24,6 @@ export default defineConfig({
         globals: {
           svelte: "Svelte",
         },
-        inlineDynamicImports: false,
-        preserveModules: false,
       },
     },
   },

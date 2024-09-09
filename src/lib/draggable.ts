@@ -10,7 +10,6 @@ function draggable(
     options: DraggableOptions = {
         property: "--sidebar-width",
         anchor: "right",
-        gridSelector: ".pane-grid-container",
     },
 ) {
     let startCor = 0,
@@ -19,7 +18,7 @@ function draggable(
         curCor: string;
 
     let property: string = options.property
-    let gridSelector: string = options.gridSelector // TODO:: Add optionals here
+    let gridSelector: string | undefined = options.gridSelector // TODO:: Add optionals here
     let anchor = options?.anchor || "right";
     let corDir = anchor === "left" || anchor === "bottom" ? -1 : 1;
     let onDrag: (event: PointerEvent) => any;
@@ -29,10 +28,7 @@ function draggable(
         document.body.style.pointerEvents = "none";
         document.body.style.cursor = "ew-resize";
 
-        const gridEl = node.closest(gridSelector) as HTMLElement;
-        if (!gridEl) {
-            throw Error(`missing grid parent ${gridSelector}`);
-        }
+        const gridEl = getGridEl(node, gridSelector)
 
         const style = window.getComputedStyle(gridEl);
         maxCor = style.getPropertyValue(property + "-max") || "0px";
@@ -81,10 +77,7 @@ function draggable(
         document.body.style.pointerEvents = "";
         document.body.style.cursor = "";
 
-        const gridEl = node.closest(gridSelector) as HTMLElement;
-        if (!gridEl) {
-            throw Error(`Missing grid parent ${gridSelector}`);
-        }
+        const gridEl = getGridEl(node, gridSelector)
 
         const gridIndex = getGridIndex(node, gridEl);
         const endCor = getGridTemplate(gridEl, anchor)[gridIndex]
@@ -114,6 +107,14 @@ function draggable(
             node.removeEventListener("pointerdown", onDragStart);
         },
     };
+}
+
+function getGridEl(node: HTMLElement, gridSelector?: string): HTMLElement {
+    const gridEl = gridSelector ? node.closest(gridSelector) as HTMLElement : document.body;
+    if (!gridEl) {
+        throw Error(`Missing grid parent ${gridSelector}`);
+    }
+    return gridEl
 }
 
 function getGridIndex(startEl: HTMLElement, gridEl: HTMLElement): number {
