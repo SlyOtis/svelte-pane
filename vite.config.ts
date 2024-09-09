@@ -29,7 +29,7 @@ export default defineConfig({
       external: ["svelte"],
       output: {
         globals: {
-          svelte: "Svelte",
+          svelte: "svelte",
         },
         // Provide exports for Svelte components
         exports: "named",
