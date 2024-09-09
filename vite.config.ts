@@ -5,47 +5,22 @@ import dts from "vite-plugin-dts";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    svelte(),
-    dts({
-      include: ["./src/lib"],
-      exclude: ["**/*.spec.ts", "**/*.test.ts"],
-    }),
-  ],
+  plugins: [dts({ rollupTypes: true }), svelte()],
   build: {
-    emptyOutDir: true,
+    sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, "src/lib/index.ts"),
       name: "sly-svelte-pane",
+      formats: ["es", "cjs", "umd", "iife"],
       fileName: (format) => `index.${format}.js`,
-      formats: ["es", "umd"],
     },
     rollupOptions: {
       external: ["svelte"],
       output: {
         globals: {
-          svelte: "Svelte",
+          react: "Svelte",
         },
-        // Provide exports for Svelte components
-        exports: "named",
-        // Preserve modules
-        // preserveModules: true,
-        // Output to a directory
-        dir: "dist",
-        // Use .js extension for all files
-        entryFileNames: "[name].[format].js",
-        chunkFileNames: "[name]-[hash].js",
       },
     },
-    sourcemap: true,
-    // Ensure Svelte components are processed
-    commonjsOptions: {
-      include: [/node_modules/],
-      extensions: [".js", ".svelte"],
-    },
-    // Ensure CSS is handled correctly
-    cssCodeSplit: true,
-    // Minimize bundle
-    minify: true,
   },
 });
