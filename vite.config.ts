@@ -23,6 +23,9 @@ export default defineConfig({
         globals: {
           svelte: "Svelte",
         },
+        entryFileNames: (chunkInfo) => {
+          return chunkInfo.name === "index" ? "index.js" : "[name].js";
+        },
       },
     },
   },
