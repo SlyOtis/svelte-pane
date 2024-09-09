@@ -1,7 +1,7 @@
 {
   "name": "sly-svelte-pane",
   "private": false,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "description": "Create resizeable grid and popout panels for svelte",
   "keywords": [
@@ -28,11 +28,11 @@
   "main": "./dist/sly-svelte-pane.umd.js",
   "module": "./dist/sly-svelte-pane.es.js",
   "types": "./dist/index.d.ts",
-  "svelte": "./dist/index.js",
+  "svelte": "./dist/sly-svelte-pane.es.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "svelte": "./dist/index.js",
+      "svelte": "./dist/sly-svelte-pane.es.js",
       "import": "./dist/sly-svelte-pane.es.js",
       "require": "./dist/sly-svelte-pane.umd.js"
     }
