@@ -6,7 +6,7 @@
 
 </script>
 
-{#if options}
+{#if options !== null}
     <div class="sly-draggable-edge-root" use:draggable={options}>
         <div class="sly-draggable-edge-touchable"></div>
     </div>
