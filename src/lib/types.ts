@@ -1,13 +1,13 @@
+
+export type DraggableAnchor = "left" | "right" | "top" | "bottom"
 /**
  * Configuration options for the draggable directive
  */
 export type DraggableOptions = {
-  /** CSS custom property to be updated */
+  /** CSS custom variable property to be updated */
   property: string;
-  /** Minimum value for the draggable property in px */
-  min: number;
-  /** Maximum value for the draggable property in px */
-  max: number;
   /** Placement of the draggable element within its parent, default: 'right' */
-  anchor?: "left" | "right" | "top" | "bottom";
+  anchor?: DraggableAnchor;
+  /** Nearest grid parent class name */
+  gridSelector: string;
 };
