@@ -1,7 +1,7 @@
 {
   "name": "sly-svelte-pane",
   "private": false,
-  "version": "1.0.25",
+  "version": "1.0.26",
   "type": "module",
   "description": "Create resizeable grid and popout panels for svelte",
   "keywords": [
