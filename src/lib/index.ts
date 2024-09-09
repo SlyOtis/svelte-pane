@@ -1,7 +1,4 @@
 export * from "./types";
-import styles from "./edge.css?inline";
-
-export { styles as edgeStyles };
 
 import DraggableEdge from "./DraggableEdge.svelte";
 import draggable from "./draggable";

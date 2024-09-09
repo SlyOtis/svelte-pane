@@ -13,7 +13,7 @@ A lightweight, flexible Svelte library for creating resizable pane layouts in yo
 ## Installation
 
 ```bash
-npm install sly-svelte-pane
+pnpm add sly-svelte-pane
 ```
 
 ## Usage
@@ -74,6 +74,24 @@ npm install sly-svelte-pane
         grid-template-columns: var(--center-scale) var(--center-scale-2) 1fr;
     }
 </style>
+```
+## Styling
+
+The package includes default styles for the draggable edge. You can customize these styles by overriding the following CSS classes:
+
+- `.sly-draggable-edge-root`: Styles the root container of the draggable edge.
+- `.sly-draggable-edge-touchable`: Styles the touchable area of the draggable edge.
+
+Example of custom styling:
+
+```css
+.sly-draggable-edge-root {
+  background: #007bff;
+}
+
+.sly-draggable-edge-touchable {
+   cursor: col-resize;
+}
 ```
 
 ## API
