@@ -6,12 +6,7 @@ import dts from "vite-plugin-dts";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    svelte({
-      compilerOptions: {
-        customElement: false,
-      },
-      emitCss: false,
-    }),
+    svelte(),
     dts({
       include: ["./src/lib"],
       exclude: ["**/*.spec.ts", "**/*.test.ts"],
