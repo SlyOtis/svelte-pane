@@ -10,6 +10,7 @@ export default defineConfig({
       compilerOptions: {
         customElement: false,
       },
+      emitCss: false,
     }),
     dts({
       include: ["./src/lib"],
@@ -30,7 +31,19 @@ export default defineConfig({
         globals: {
           svelte: "Svelte",
         },
+        // Provide exports for Svelte components
+        exports: "named",
+        // Preserve modules
+        preserveModules: true,
+        // Output to a directory
+        dir: "dist",
+        // Use .js extension for all files
+        entryFileNames: "[name].js",
       },
     },
+    // Ensure CSS is handled correctly
+    cssCodeSplit: true,
+    // Minimize bundle
+    minify: true,
   },
 });
