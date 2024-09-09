@@ -19,10 +19,10 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, "src/lib/index.ts"),
       name: "sly-svelte-pane",
-      formats: ["es", "umd"],
       fileName: (format) => `sly-svelte-pane.${format}.js`,
     },
     rollupOptions: {
+      external: ['svelte'],
       output: {
         globals: {
           svelte: "Svelte",
