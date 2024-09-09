@@ -14,8 +14,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/lib/index.ts"),
-      name: "sly-svelte-location-router",
-      fileName: (format) => `sly-svelte-location-router.${format}.js`,
+      name: "sly-svelte-pane",
+      fileName: (format) => `sly-svelte-pane.${format}.js`,
     },
     rollupOptions: {
       external: ["svelte"],
