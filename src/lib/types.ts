@@ -9,5 +9,5 @@ export type DraggableOptions = {
   /** Placement of the draggable element within its parent, default: 'right' */
   anchor?: DraggableAnchor;
   /** Nearest grid parent class name */
-  gridSelector: string;
+  gridSelector?: string;
 };
