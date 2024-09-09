@@ -1,35 +1,17 @@
 <script lang="ts">
-    import {draggable, type DraggableOptions} from "../lib/draggable";
-    export let options: DraggableOptions
+    import "./edge.css"
+    import draggable from "./draggable";
+    import type {DraggableOptions} from "./types";
+    export let options: DraggableOptions | null = null
+
 </script>
 
-<div class="border" use:draggable={options}>
-    <div class="touchable"></div>
-</div>
-
-<style>
-    .border {
-        position: relative;
-        width: 1px;
-        height: 100%;
-        top: 0;
-        bottom: 0;
-        background: var(--color-control);
-    }
-
-    .touchable {
-        position: absolute;
-        width: 21px;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        margin-right: -11px;
-        z-index: 10;
-    }
-
-    .touchable:hover,
-    .touchable:active,
-    .touchable:focus {
-        cursor: ew-resize;
-    }
-</style>
+{#if options}
+    <div class="sly-draggable-edge-root" use:draggable={options}>
+        <div class="sly-draggable-edge-touchable"></div>
+    </div>
+{:else}
+    <div class="sly-draggable-edge-root" on:pointerdown>
+        <div class="sly-draggable-edge-touchable"></div>
+    </div>
+{/if}

@@ -18,9 +18,11 @@ function draggable(
         minCor: string,
         curCor: string;
 
+    let property: string = options.property
+    let gridSelector: string = options.gridSelector // TODO:: Add optionals here
+    let anchor = options?.anchor || "right";
+    let corDir = anchor === "left" || anchor === "bottom" ? -1 : 1;
     let onDrag: (event: PointerEvent) => any;
-    const anchor = options?.anchor || "right";
-    const corDir = anchor === "left" || anchor === "bottom" ? -1 : 1;
 
     function onDragStart(event: PointerEvent) {
         document.body.style.userSelect = "none";
@@ -28,13 +30,13 @@ function draggable(
         document.body.style.cursor = "ew-resize";
 
         const style = getComputedStyle(document.documentElement);
-        maxCor = style.getPropertyValue(options.property + "-max") || "0px";
-        minCor = style.getPropertyValue(options.property + "-min") || "0px";
-        curCor = style.getPropertyValue(options.property) || "0px";
+        maxCor = style.getPropertyValue(property + "-max") || "0px";
+        minCor = style.getPropertyValue(property + "-min") || "0px";
+        curCor = style.getPropertyValue(property) || "0px";
 
-        const gridEl = node.closest(options.gridSelector) as HTMLElement;
+        const gridEl = node.closest(gridSelector) as HTMLElement;
         if (!gridEl) {
-            throw Error(`missing grid parent ${options.gridSelector}`);
+            throw Error(`missing grid parent ${gridSelector}`);
         }
 
         switch (anchor) {
@@ -43,7 +45,7 @@ function draggable(
                 startCor = event.clientX;
                 onDrag = (event: PointerEvent) => {
                     gridEl.style.setProperty(
-                        options.property + "_calc",
+                        property,
                         `clamp(${minCor}, calc(${curCor} + (${event.clientX} - ${startCor}) * ${corDir}), ${maxCor})`,
                     );
                 };
@@ -53,7 +55,7 @@ function draggable(
                 startCor = event.clientY;
                 onDrag = (event: PointerEvent) => {
                     gridEl.style.setProperty(
-                        options.property + "_calc",
+                        property,
                         `clamp(${minCor}, calc(${curCor} + (${event.clientY} - ${startCor}) * ${corDir}), ${maxCor})`,
                     );
                 };
@@ -78,17 +80,10 @@ function draggable(
     }
 
     function update(options: DraggableOptions) {
-        const gridEl = node.closest(options.gridSelector) as HTMLElement;
-        if (!gridEl) {
-            throw Error(`missing grid parent ${options.gridSelector}`);
-        }
-
-        const style = getComputedStyle(gridEl);
-        console.log("calc", style.getPropertyValue(options.property + "_calc"))
-
-        if (style.getPropertyValue(options.property + "_calc").length <= 0) {
-            gridEl.style.setProperty(options.property, `var(${options.property}_calc)`);
-        }
+        property = options.property
+        gridSelector = options.gridSelector // TODO:: Add optionals here
+        anchor = options?.anchor || "right";
+        corDir = anchor === "left" || anchor === "bottom" ? -1 : 1;
     }
 
     update(options)
@@ -125,7 +120,7 @@ function onDragY(
 ) {
     document.documentElement.style.setProperty(
         property + "_calc",
-        `clamp(${minCor}, calc(${curCor} + ${curY - startCor} * ${corDir}), ${maxCor})`,
+        `clamp(${minCor}, calc(${curCor}px + ${curY - startCor}px * ${corDir}), ${maxCor})`,
     );
 }
 
