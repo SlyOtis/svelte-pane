@@ -1,13 +1,11 @@
 export * from "./types";
 
-import { default as DraggableEdge } from "./DraggableEdge.svelte";
-import draggable from "./draggable";
-
 /**
  * A Svelte component representing a draggable edge.
  * @component
  */
-export { DraggableEdge };
+export {default as DraggableEdge} from "./DraggableEdge.svelte";
+import draggable from "./draggable";
 
 /**
  * A Svelte action to make an element draggable.
@@ -15,4 +13,4 @@ export { DraggableEdge };
  * @param {HTMLElement} node - The DOM element to make draggable.
  * @param {DraggableOptions} options - Configuration options for the draggable behavior.
  */
-export { draggable };
+export {draggable};
