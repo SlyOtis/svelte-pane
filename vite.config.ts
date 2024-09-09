@@ -34,11 +34,12 @@ export default defineConfig({
         // Provide exports for Svelte components
         exports: "named",
         // Preserve modules
-        preserveModules: true,
+        // preserveModules: true,
         // Output to a directory
         dir: "dist",
         // Use .js extension for all files
         entryFileNames: "[name].js",
+        chunkFileNames: "[name]-[hash].js",
       },
     },
     // Ensure CSS is handled correctly
