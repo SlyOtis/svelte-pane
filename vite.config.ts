@@ -38,7 +38,7 @@ export default defineConfig({
         // Output to a directory
         dir: "dist",
         // Use .js extension for all files
-        entryFileNames: "[name].js",
+        entryFileNames: "[name].[format].js",
         chunkFileNames: "[name]-[hash].js",
       },
     },
