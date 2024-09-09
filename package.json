@@ -1,7 +1,7 @@
 {
   "name": "sly-svelte-pane",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Create resizeable grid and popout panels for svelte",
   "keywords": [
@@ -45,6 +45,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@tsconfig/svelte": "^5.0.4",
+    "@types/node": "^22.5.4",
     "svelte": "^4.2.18",
     "svelte-check": "^3.8.5",
     "tslib": "^2.6.3",
