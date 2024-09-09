@@ -1,6 +1,21 @@
 export * from "./types";
-export * from "./edge.css"
+import styles from "./edge.css?inline";
+
+export { styles as edgeStyles };
 
 import DraggableEdge from "./DraggableEdge.svelte";
 import draggable from "./draggable";
-export { DraggableEdge, draggable };
+
+/**
+ * A Svelte component representing a draggable edge.
+ * @component
+ */
+export { DraggableEdge };
+
+/**
+ * A Svelte action to make an element draggable.
+ * @function
+ * @param {HTMLElement} node - The DOM element to make draggable.
+ * @param {DraggableOptions} options - Configuration options for the draggable behavior.
+ */
+export { draggable };
