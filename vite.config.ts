@@ -23,7 +23,6 @@ export default defineConfig({
       fileName: (format) => `sly-svelte-pane.${format}.js`,
     },
     rollupOptions: {
-      external: ["svelte"],
       output: {
         globals: {
           svelte: "Svelte",
