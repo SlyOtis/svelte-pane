@@ -1,18 +1,18 @@
 <script lang="ts">
-    import draggable from "./lib/draggable";
-    import DraggablePane from "./lib/DraggablePane.svelte";
-
+    import {DraggableEdge} from "./lib";
 </script>
 
 <main class="pane-grid-container">
-    <div class="pane" use:draggable={{
-        property: "--center-scale",
-        anchor: "right",
-        gridSelector: ".pane-grid-container",
-    }}>
+    <div class="pane">
         <h1>Pane 1</h1>
+        <DraggableEdge
+                options={{
+                property: "--center-scale",
+                anchor: "right",
+                gridSelector: ".pane-grid-container",
+            }}
+        />
     </div>
-    <DraggablePane as="div" options={} />
     <div class="pane">
         <h1>Pane 2</h1>
     </div>
@@ -40,9 +40,9 @@
         position: relative;
         width: 100%;
         height: 100%;
-    }
-
-    .pane:nth-of-type(1) {
-        border-left: 1px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
     }
 </style>
