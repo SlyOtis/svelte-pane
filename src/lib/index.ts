@@ -1,6 +1,6 @@
 export * from "./types";
 
-import DraggableEdge from "./DraggableEdge.svelte";
+import { default as DraggableEdge } from "./DraggableEdge.svelte";
 import draggable from "./draggable";
 
 /**

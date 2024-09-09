@@ -12,9 +12,13 @@ export default defineConfig({
     }),
   ],
   build: {
+    sourcemap: true,
+    minify: false,
+    cssCodeSplit: false,
     lib: {
       entry: path.resolve(__dirname, "src/lib/index.ts"),
       name: "sly-svelte-pane",
+      formats: ["es", "umd"],
       fileName: (format) => `sly-svelte-pane.${format}.js`,
     },
     rollupOptions: {
@@ -23,9 +27,8 @@ export default defineConfig({
         globals: {
           svelte: "Svelte",
         },
-        entryFileNames: (chunkInfo) => {
-          return chunkInfo.name === "index" ? "index.js" : "[name].js";
-        },
+        inlineDynamicImports: false,
+        preserveModules: false,
       },
     },
   },
