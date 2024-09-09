@@ -42,6 +42,12 @@ export default defineConfig({
         chunkFileNames: "[name]-[hash].js",
       },
     },
+    sourcemap: true,
+    // Ensure Svelte components are processed
+    commonjsOptions: {
+      include: [/node_modules/],
+      extensions: [".js", ".svelte"],
+    },
     // Ensure CSS is handled correctly
     cssCodeSplit: true,
     // Minimize bundle
