@@ -1,4 +1,4 @@
-import type {DraggableOptions} from "./types";
+import type {DraggableAnchor, DraggableOptions} from "./types";
 
 /**
  * Svelte directive to make an element draggable
@@ -29,15 +29,15 @@ function draggable(
         document.body.style.pointerEvents = "none";
         document.body.style.cursor = "ew-resize";
 
-        const style = getComputedStyle(document.documentElement);
-        maxCor = style.getPropertyValue(property + "-max") || "0px";
-        minCor = style.getPropertyValue(property + "-min") || "0px";
-        curCor = style.getPropertyValue(property) || "0px";
-
         const gridEl = node.closest(gridSelector) as HTMLElement;
         if (!gridEl) {
             throw Error(`missing grid parent ${gridSelector}`);
         }
+
+        const style = window.getComputedStyle(gridEl);
+        maxCor = style.getPropertyValue(property + "-max") || "0px";
+        minCor = style.getPropertyValue(property + "-min") || "0px";
+        curCor = style.getPropertyValue(property) || "0px";
 
         switch (anchor) {
             case "left":
@@ -45,8 +45,12 @@ function draggable(
                 startCor = event.clientX;
                 onDrag = (event: PointerEvent) => {
                     gridEl.style.setProperty(
+                        property + "_calc",
+                        `calc(${curCor} + (${event.clientX}px - ${startCor}px) * ${corDir})`,
+                    );
+                    gridEl.style.setProperty(
                         property,
-                        `clamp(${minCor}, calc(${curCor} + (${event.clientX} - ${startCor}) * ${corDir}), ${maxCor})`,
+                        `clamp(${minCor}, var(${property}_calc), ${maxCor})`,
                     );
                 };
                 break;
@@ -55,8 +59,12 @@ function draggable(
                 startCor = event.clientY;
                 onDrag = (event: PointerEvent) => {
                     gridEl.style.setProperty(
+                        property + "_calc",
+                        `calc(${curCor} + (${event.clientY}px - ${startCor}px) * ${corDir})`,
+                    );
+                    gridEl.style.setProperty(
                         property,
-                        `clamp(${minCor}, calc(${curCor} + (${event.clientY} - ${startCor}) * ${corDir}), ${maxCor})`,
+                        `clamp(${minCor}, var(${property}_calc), ${maxCor})`,
                     );
                 };
                 break;
@@ -72,6 +80,17 @@ function draggable(
         document.body.style.userSelect = "";
         document.body.style.pointerEvents = "";
         document.body.style.cursor = "";
+
+        const gridEl = node.closest(gridSelector) as HTMLElement;
+        if (!gridEl) {
+            throw Error(`missing grid parent ${gridSelector}`);
+        }
+
+        const gridIndex = getGridIndex(node, gridEl);
+        const endCor = getGridTemplate(gridEl, anchor)[gridIndex]
+
+        gridEl.style.setProperty(property, endCor);
+        gridEl.style.removeProperty(`${property}_calc`);
 
         window.removeEventListener("pointercancel", onDragEnd);
         window.removeEventListener("pointerleave", onDragEnd);
@@ -97,31 +116,35 @@ function draggable(
     };
 }
 
-function onDragX(
-    curX: number,
-    startCor: number,
-    curCor: string,
-    maxCor: string,
-    minCor: string,
-    corDir: number,
-    property: string,
-) {
+function getGridIndex(startEl: HTMLElement, gridEl: HTMLElement): number {
+    let directChild = startEl;
+    while (directChild.parentElement !== gridEl) {
+        if (directChild.parentElement) {
+            directChild = directChild.parentElement;
+        } else {
+            throw Error('Node is not a descendant of gridEl');
+        }
+    }
 
+    const childIndex = Array.from(gridEl.children).indexOf(directChild)
+
+    if (childIndex < 0) {
+        throw Error('Node is not a descendant of gridEl');
+    }
+
+    return childIndex;
 }
 
-function onDragY(
-    curY: number,
-    startCor: number,
-    curCor: string,
-    maxCor: string,
-    minCor: string,
-    corDir: number,
-    property: string,
-) {
-    document.documentElement.style.setProperty(
-        property + "_calc",
-        `clamp(${minCor}, calc(${curCor}px + ${curY - startCor}px * ${corDir}), ${maxCor})`,
-    );
+function getGridTemplate(gridEl: HTMLElement, anchor: DraggableAnchor): string[] {
+    const style = window.getComputedStyle(gridEl)
+    switch (anchor) {
+        case "left":
+        case "right":
+            return style.gridTemplateColumns.split(" ")
+        case "top":
+        case "bottom":
+            return style.gridTemplateRows.split(" ")
+    }
 }
 
 export default draggable;
