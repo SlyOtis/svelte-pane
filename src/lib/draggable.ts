@@ -83,7 +83,7 @@ function draggable(
 
         const gridEl = node.closest(gridSelector) as HTMLElement;
         if (!gridEl) {
-            throw Error(`missing grid parent ${gridSelector}`);
+            throw Error(`Missing grid parent ${gridSelector}`);
         }
 
         const gridIndex = getGridIndex(node, gridEl);
