@@ -9,6 +9,8 @@ export default defineConfig({
     svelte({
       compilerOptions: {
         customElement: false,
+        dev: false,
+        css: "injected",
       },
       emitCss: false,
     }),
