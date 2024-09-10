@@ -2,14 +2,14 @@
     import {DraggableEdge} from "./lib";
 </script>
 
-<main class="pane-grid-container">
+<main id="pane-grid-container">
     <div class="pane">
         <h1>Pane 1</h1>
         <DraggableEdge
                 options={{
                 property: "--center-scale",
                 anchor: "right",
-                gridSelector: ".pane-grid-container",
+                gridSelector: "#pane-grid-container",
             }}
         />
     </div>
@@ -19,7 +19,7 @@
                 options={{
                 property: "--center-scale-2",
                 anchor: "right",
-                gridSelector: ".pane-grid-container",
+                gridSelector: "#pane-grid-container",
             }}
         />
     </div>

@@ -126,11 +126,28 @@ function setDragProperties(gridEl: HTMLElement, property: string, curXY: number,
 }
 
 function getGridEl(node: HTMLElement, gridSelector?: string): HTMLElement {
-    const gridEl = gridSelector ? node.closest(gridSelector) as HTMLElement : document.body;
+    const gridEl = gridSelector ? locateClosest(node, gridSelector) as HTMLElement : document.body;
     if (!gridEl) {
         throw Error(`Missing grid parent ${gridSelector}`);
     }
     return gridEl
+}
+
+function locateClosest(node: HTMLElement, selector: string): HTMLElement {
+    if (node === document.body) {
+        return node
+    }
+
+    if (node.matches(selector)) {
+        return node
+    }
+
+    const parent = node.parentElement
+    if (parent) {
+        return locateClosest(parent, selector);
+    }
+
+    return document.body
 }
 
 function getGridIndex(startEl: HTMLElement, gridEl: HTMLElement): number {
