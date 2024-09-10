@@ -12,7 +12,7 @@ function draggable(
         anchor: "right",
     },
 ) {
-    let startCor = 0,
+    let startXY = 0,
         maxCor: string,
         minCor: string,
         curCor: string;
@@ -22,10 +22,11 @@ function draggable(
     let anchor = options?.anchor || "right";
     let corDir = anchor === "left" || anchor === "bottom" ? -1 : 1;
     let onDrag: (event: PointerEvent) => any;
+    let dragTimeout: any = null
 
     function onDragStart(event: PointerEvent) {
         document.body.style.userSelect = "none";
-        document.body.style.pointerEvents = "none";
+        document.body.style.pointerEvents = "all";
         document.body.style.cursor = "ew-resize";
 
         const gridEl = getGridEl(node, gridSelector)
@@ -38,41 +39,45 @@ function draggable(
         switch (anchor) {
             case "left":
             case "right":
-                startCor = event.clientX;
-                onDrag = (event: PointerEvent) => {
-                    gridEl.style.setProperty(
-                        property + "_calc",
-                        `calc(${curCor} + (${event.clientX}px - ${startCor}px) * ${corDir})`,
-                    );
-                    gridEl.style.setProperty(
-                        property,
-                        `clamp(${minCor}, var(${property}_calc), ${maxCor})`,
-                    );
+                startXY = event.clientX;
+                onDrag = (e: PointerEvent) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setDragProperties(gridEl, property, e.clientX, startXY, curCor, corDir, maxCor, minCor)
+                    clearTimeout(dragTimeout)
+                    dragTimeout = setTimeout(onDragEnd, 5000)
                 };
                 break;
             case "top":
             case "bottom":
-                startCor = event.clientY;
-                onDrag = (event: PointerEvent) => {
-                    gridEl.style.setProperty(
-                        property + "_calc",
-                        `calc(${curCor} + (${event.clientY}px - ${startCor}px) * ${corDir})`,
-                    );
-                    gridEl.style.setProperty(
-                        property,
-                        `clamp(${minCor}, var(${property}_calc), ${maxCor})`,
-                    );
+                startXY = event.clientY;
+                onDrag = (e: PointerEvent) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setDragProperties(gridEl, property, e.clientY, startXY, curCor, corDir, maxCor, minCor)
+                    clearTimeout(dragTimeout)
+                    dragTimeout = setTimeout(onDragEnd, 5000)
                 };
                 break;
         }
 
+        // If we loose the event ref this will clear it right up
+        clearTimeout(dragTimeout)
+        dragTimeout = setTimeout(onDragEnd, 5000)
+
         window.addEventListener("pointercancel", onDragEnd);
+        window.addEventListener("lostpointercapture", onDragEnd);
         window.addEventListener("pointerleave", onDragEnd);
         window.addEventListener("pointerup", onDragEnd);
         window.addEventListener("pointermove", onDrag);
     }
 
-    function onDragEnd() {
+    function onDragEnd(e?: PointerEvent) {
+        e?.preventDefault();
+        e?.stopPropagation();
+
+        clearTimeout(dragTimeout)
+
         document.body.style.userSelect = "";
         document.body.style.pointerEvents = "";
         document.body.style.cursor = "";
@@ -86,6 +91,7 @@ function draggable(
         gridEl.style.removeProperty(`${property}_calc`);
 
         window.removeEventListener("pointercancel", onDragEnd);
+        window.removeEventListener("lostpointercapture", onDragEnd);
         window.removeEventListener("pointerleave", onDragEnd);
         window.removeEventListener("pointerup", onDragEnd);
         window.removeEventListener("pointermove", onDrag);
@@ -100,13 +106,23 @@ function draggable(
 
     update(options)
     node.addEventListener("pointerdown", onDragStart);
-
     return {
         update,
         destroy() {
             node.removeEventListener("pointerdown", onDragStart);
         },
     };
+}
+
+function setDragProperties(gridEl: HTMLElement, property: string, curXY: number, startXY: number, curCor: string, corDir: number, maxCor: string, minCor: string) {
+    gridEl.style.setProperty(
+        property + "_calc",
+        `calc(${curCor} + (${curXY}px - ${startXY}px) * ${corDir})`,
+    );
+    gridEl.style.setProperty(
+        property,
+        `clamp(${minCor}, var(${property}_calc), ${maxCor})`,
+    );
 }
 
 function getGridEl(node: HTMLElement, gridSelector?: string): HTMLElement {
