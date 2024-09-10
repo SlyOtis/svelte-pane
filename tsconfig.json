@@ -5,12 +5,15 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "resolveJsonModule": true,
+    "declaration": true,
+    "declarationDir": "./dist",
     "allowJs": true,
     "checkJs": true,
     "isolatedModules": true,
-    "declaration": true,
-    "declarationDir": "./dist",
-    "emitDeclarationOnly": true,
-    "outDir": "./dist"
+    "moduleDetection": "force",
+    "outDir": "./dist",
+    "emitDeclarationOnly": true
   },
+  "exclude": ["node_modules", "dist", "src/main.ts"],
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"]
 }
