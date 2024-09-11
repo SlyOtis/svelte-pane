@@ -1,15 +1,32 @@
-/**
- * A Svelte component representing a draggable edge.
- * @component
- */
-export { default as DraggableEdge } from "./DraggableEdge.svelte";
+import FileTree from "./FileTree.svelte";
+import FileTreeItem from "./FileTreeItem.svelte";
+import type { FileDescriptor, HighlightedItem } from "./types";
+import { getContext, setContext } from "svelte";
+import { type Writable, writable } from "svelte/store";
 
-/**
- * A Svelte action to make an element draggable.
- * @function
- * @param {HTMLElement} node - The DOM element to make draggable.
- * @param {DraggableOptions} options - Configuration options for the draggable behavior.
- */
-export { default as draggable } from "./draggable";
+export type * from "./types";
 
-export * from "./types";
+export { FileTreeItem, FileTree, defaultFileTree };
+
+export default FileTree;
+
+const highlightedState = writable<HighlightedItem>();
+
+export function setHighlightContext() {
+  setContext("highlightItem", highlightedState);
+  return {
+    highlightItem: (
+      fileDesc: FileDescriptor | undefined | null,
+      style?: string,
+    ) => {
+      highlightedState.set({
+        highlightItem: fileDesc,
+        highlightStyle: style,
+      });
+    },
+  };
+}
+
+export function getHighlightContext() {
+  return getContext<Writable<HighlightedItem>>("highlightItem");
+}
