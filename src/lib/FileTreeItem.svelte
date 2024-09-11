@@ -1,20 +1,21 @@
 <script lang="ts">
     import type {
-        FileDescriptor,
+        FileDescriptor, LastItem,
         SelectedFile,
         SelectedFiles,
         SelectedFilesContext,
     } from "./types";
-    import { FileTreeItem, getHighlightContext } from "./index.js";
     import { createEventDispatcher, getContext } from "svelte";
-    import Checkbox from "../Checkbox.svelte";
-    import { css } from "../../lib/utils";
+    import Checkbox from "./Checkbox.svelte";
+    import { css } from "./utils";
+    import {getHighlightContext} from "./index";
+    import ItemRenderer from "./ItemRenderer.svelte";
 
     export let fileDesc: FileDescriptor;
     export let depth = 0;
     export let expanded = false;
     export let notSelectable = false;
-    export let noLastItem = false;
+    export let lastItem: LastItem = null;
     export let noFolderClick = false;
 
     const dispatch = createEventDispatcher();
@@ -77,7 +78,7 @@
             {
                 id: start.id,
                 name: start.name,
-                size: start.size,
+                metadata: start.metadata,
                 mimeType: start.mimeType,
                 path: start.path,
                 href: start.href,
@@ -126,30 +127,32 @@
             {@const childDesc = { ...child, selected: fileDesc.selected }}
             {#key `${childDesc.id}#${childDesc.selected}`}
                 <li>
-                    <FileTreeItem
+                    <svelte:self
                         fileDesc={childDesc}
                         depth={depth + 1}
                         on:click
                         on:selected
                         {notSelectable}
-                        {noLastItem}
+                        {lastItem}
                         {noFolderClick}
                     >
-                        {#if !noLastItem && fileDesc.mimeType === "folder"}
-                            <slot></slot>
+                        {#if lastItem && fileDesc.mimeType === "folder"}
+                            <slot data={fileDesc}></slot>
                         {/if}
-                    </FileTreeItem>
+                    </svelte:self>
                 </li>
             {/key}
         {/each}
-        {#if !noLastItem && fileDesc.mimeType === "folder"}
+        {#if lastItem && fileDesc.mimeType === "folder"}
             <li
                 class="last-item"
                 style="padding-left: calc(16px * {!notSelectable
                     ? depth
                     : depth + 1})"
             >
-                <slot data={fileDesc}></slot>
+                <ItemRenderer {fileDesc} item={lastItem}>
+                    <slot data={fileDesc}></slot>
+                </ItemRenderer>
             </li>
         {/if}
     {/if}

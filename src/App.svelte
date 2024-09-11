@@ -1,59 +1,42 @@
 <script lang="ts">
-    import {DraggableEdge} from "./lib";
+    import FileTree, {type FileDescriptor, type SelectedFiles} from "./lib";
+    import {defaultFileTree} from "./example"
+
+    const fileDesc = defaultFileTree
+    let selectFileDesc: FileDescriptor | undefined = undefined
+    let selectedFiles: SelectedFiles = {};
+
+    function onClick(e: CustomEvent<FileDescriptor>) {
+        // TODO:: Get selected file from URL
+        // window.location.href = `/inbox${e.detail.path}`
+        selectFileDesc = e.detail
+    }
+
+    function onSelected(e: CustomEvent<FileDescriptor>) {
+
+    }
+
 </script>
 
-<main id="pane-grid-container">
-    <div class="pane">
-        <h1>Pane 1</h1>
-        <DraggableEdge
-                options={{
-                property: "--center-scale",
-                anchor: "right",
-                gridSelector: "#pane-grid-container",
-            }}
-        />
-    </div>
-    <div class="pane">
-        <h1>Pane 2</h1>
-        <DraggableEdge
-                options={{
-                property: "--center-scale-2",
-                anchor: "right",
-                gridSelector: "#pane-grid-container",
-            }}
-        />
-    </div>
-    <div class="pane">
-        <h1>Pane 3</h1>
-    </div>
+<main class="root page-root">
+    <FileTree
+            {fileDesc}
+            on:click={onClick}
+            on:selected={onSelected}
+            bind:selectedFiles
+            noLastItem
+            noFolderClick
+    />
 </main>
 
 <style>
-    :root {
-        --center-scale: 50%;
-        --center-scale-max: 90%;
-        --center-scale-min: 10%;
-        --center-scale-2: 50%;
-        --center-scale-2-max: 90%;
-        --center-scale-2-min: 10%;
-    }
-
-    main {
+    .root {
         position: relative;
-        display: grid;
         width: 100%;
         height: 100%;
-        grid-template-columns: var(--center-scale) var(--center-scale-2) 1fr;
+        display: flex;
+        justify-content: start;
+        align-items: start;
         overflow: hidden;
-    }
-
-    .pane {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: grid;
-        grid-template-columns: 1fr auto;
-        justify-items: center;
-        align-items: center;
     }
 </style>
