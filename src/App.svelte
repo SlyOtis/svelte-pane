@@ -1,6 +1,7 @@
 <script lang="ts">
     import FileTree, {type FileDescriptor, type SelectedFiles} from "./lib";
     import {defaultFileTree} from "./example"
+    import LastItemTest from "./LastItemTest.svelte";
 
     const fileDesc = defaultFileTree
     let selectFileDesc: FileDescriptor | undefined = undefined
@@ -24,7 +25,7 @@
             on:click={onClick}
             on:selected={onSelected}
             bind:selectedFiles
-            noLastItem
+            lastItem={(data) => import("./lastItemTest.svelte")}
             noFolderClick
     />
 </main>

@@ -3,7 +3,7 @@
         FileDescriptor, LastItem,
         SelectedFile,
         SelectedFiles,
-        SelectedFilesContext,
+        FileTreeContext,
     } from "./types";
     import { createEventDispatcher, getContext } from "svelte";
     import Checkbox from "./Checkbox.svelte";
@@ -13,7 +13,6 @@
 
     export let fileDesc: FileDescriptor;
     export let depth = 0;
-    export let expanded = false;
     export let notSelectable = false;
     export let lastItem: LastItem = null;
     export let noFolderClick = false;
@@ -21,9 +20,10 @@
     const dispatch = createEventDispatcher();
 
     function getIcon(is_expanded: boolean, descriptor: FileDescriptor) {
-        if (is_expanded) {
-            return "folder_open";
+        if (/\bfolder\b/i.test(descriptor.mimeType)) {
+            return is_expanded ? "folder_open": "folder"
         }
+
 
         if (/\bpdf\b/i.test(descriptor.mimeType)) {
             return "picture_as_pdf";
@@ -44,14 +44,20 @@
         return "folder";
     }
 
-    $: icon = getIcon(expanded, fileDesc);
+    $: icon = getIcon(fileDesc?.expanded || false, fileDesc);
 
-    const { selectItems, deselectItems } =
-        getContext<SelectedFilesContext>("selectedFiles");
+    const { selectItems, deselectItems, expandItems, collapseItems } =
+        getContext<FileTreeContext>("selectedFiles");
 
     function onItemClick() {
         if (fileDesc.mimeType === "folder") {
-            expanded = !expanded;
+            fileDesc.expanded = !fileDesc.expanded;
+
+            if (fileDesc.expanded) {
+                expandItems(fileDesc)
+            } else {
+                collapseItems(fileDesc)
+            }
 
             if (!noFolderClick) {
                 dispatch("click", fileDesc);
@@ -122,9 +128,9 @@
         <span class="material-symbols-outlined">{icon}</span>
         <button on:click={onItemClick}>{fileDesc.name}</button>
     </li>
-    {#if fileDesc.children && expanded}
+    {#if fileDesc.children && fileDesc.expanded}
         {#each fileDesc.children as child}
-            {@const childDesc = { ...child, selected: fileDesc.selected }}
+            {@const childDesc = { ...child, selected: fileDesc.selected, expanded: fileDesc.expanded || false }}
             {#key `${childDesc.id}#${childDesc.selected}`}
                 <li>
                     <svelte:self

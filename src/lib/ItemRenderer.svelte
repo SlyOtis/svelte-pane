@@ -8,25 +8,40 @@
 
     let renderedComponent: ComponentType | null = null;
     let htmlContent: string | null = null;
+    let isLoading = true
+
+    function isSvelteComponent(func: any): func is ComponentType {
+        return func.$$render !== undefined;
+    }
 
     async function renderItem() {
-        if (item === null) {
-            htmlContent = '';
-        } else if (typeof item === 'string') {
-            htmlContent = item;
-        } else if (typeof item === 'function') {
-            renderedComponent = item;
-        } else if (typeof item === 'object' && 'default' in item && typeof item.default === 'function') {
-            renderedComponent = item.default;
-        } else if (item instanceof Promise) {
-            try {
-                const resolvedItem = await item;
-                if (typeof resolvedItem === 'object' && resolvedItem !== null && 'default' in resolvedItem) {
-                    renderedComponent = resolvedItem.default;
+        isLoading = true;
+
+        try {
+            if (item === null || item === undefined) {
+                htmlContent = '';
+            } else if (typeof item === 'string') {
+                htmlContent = item;
+            } else if (typeof item === 'function') {
+                if (isSvelteComponent(item)) {
+                    renderedComponent = item;
+                } else {
+                    const result = (item as any)(fileDesc);
+                    if (result instanceof Promise) {
+                        const resolvedResult = await result;
+                        renderedComponent = resolvedResult.default;
+                    } else {
+                        renderedComponent = result.default;
+                    }
                 }
-            } catch (error) {
-                console.error('Error loading async component:', error);
+            } else if (typeof item === 'object' && 'default' in item && typeof item.default === 'function') {
+                renderedComponent = item.default;
             }
+        } catch (error) {
+            console.error('Error rendering item:', error);
+            htmlContent = `<p>Error: ${error}</p>`;
+        } finally {
+            isLoading = false;
         }
     }
 
@@ -34,13 +49,15 @@
         renderItem();
     });
 
-    $: if (item) renderItem();
+    $: if (item || fileDesc) renderItem();
 </script>
 
-{#if htmlContent !== null}
+{#if isLoading}
+    <slot data={fileDesc}></slot>
+{:else if htmlContent !== null}
     {@html htmlContent}
 {:else if renderedComponent}
     <svelte:component this={renderedComponent} />
 {:else}
-    <slot data={fileDesc}></slot>
+    <p>No content to display</p>
 {/if}
