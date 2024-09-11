@@ -27,7 +27,14 @@
             bind:selectedFiles
             lastItem={(data) => import("./lastItemTest.svelte")}
             noFolderClick
-    />
+    >
+        <div slot="item-actions">
+            <button><span class="material-symbols-outlined">delete</span></button>
+        </div>
+        <div slot="item-loading">
+            <span>Loading...</span>
+        </div>
+    </FileTree>
 </main>
 
 <style>

@@ -122,15 +122,23 @@
 
 <ul class="root">
     <li class="header" style={headerStyle}>
-        {#if !notSelectable}
-            <Checkbox checked={fileDesc.selected} on:checked={onItemSelected} />
-        {/if}
-        <span class="material-symbols-outlined">{icon}</span>
-        <button on:click={onItemClick}>{fileDesc.name}</button>
+        <div class="start">
+            {#if !notSelectable}
+                <Checkbox checked={fileDesc.selected} on:checked={onItemSelected} />
+            {/if}
+
+        </div>
+        <button on:click={onItemClick} class="item-name">
+            <span class="material-symbols-outlined">{icon}</span>
+            <span>{fileDesc.name}</span>
+        </button>
+        <div class="end">
+            <slot name="item-actions"></slot>
+        </div>
     </li>
     {#if fileDesc.children && fileDesc.expanded}
         {#each fileDesc.children as child}
-            {@const childDesc = { ...child, selected: fileDesc.selected, expanded: fileDesc.expanded || false }}
+            {@const childDesc = { ...child, selected: fileDesc.selected}}
             {#key `${childDesc.id}#${childDesc.selected}`}
                 <li>
                     <svelte:self
@@ -143,7 +151,8 @@
                         {noFolderClick}
                     >
                         {#if lastItem && fileDesc.mimeType === "folder"}
-                            <slot data={fileDesc}></slot>
+                            <slot name="item-loading" data={fileDesc}></slot>
+                            <slot name="item-actions" data={fileDesc}></slot>
                         {/if}
                     </svelte:self>
                 </li>
@@ -157,7 +166,7 @@
                     : depth + 1})"
             >
                 <ItemRenderer {fileDesc} item={lastItem}>
-                    <slot data={fileDesc}></slot>
+                    <slot name="item-loading" data={fileDesc}></slot>
                 </ItemRenderer>
             </li>
         {/if}
@@ -194,6 +203,24 @@
         width: 100%;
         height: auto;
         padding: 8px 16px;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    .header > .item-name {
+        position: relative;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .header > .start, .header > .end {
+        position: relative;
+        display: flex;
+        justify-content: start;
+        align-items: center;
     }
 
     .last-item {
