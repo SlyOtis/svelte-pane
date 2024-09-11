@@ -1,7 +1,7 @@
 {
-  "name": "sly-svelte-pane",
+  "name": "sly-svelte-file-tree",
   "private": false,
-  "version": "1.1.1",
+  "version": "1.0.0",
   "type": "module",
   "description": "Create resizeable grid and popout panels for svelte",
   "keywords": [
@@ -14,11 +14,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/SlyOtis/svelte-pane"
+    "url": "https://github.com/SlyOtis/svelte-file-tree"
   },
-  "homepage": "https://github.com/SlyOtis/svelte-pane",
+  "homepage": "https://github.com/SlyOtis/svelte-file-tree",
   "bugs": {
-    "url": "https://github.com/SlyOtis/svelte-pane/issues"
+    "url": "https://github.com/SlyOtis/svelte-file-tree/issues"
   },
   "author": "Martin Ottersland",
   "license": "MIT",
@@ -58,5 +58,8 @@
   },
   "peerDependencies": {
     "svelte": "^4.0.0"
+  },
+  "dependencies": {
+    "uuid": "^10.0.0"
   }
 }

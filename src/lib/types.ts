@@ -1,13 +1,30 @@
+export type FileMetadata = {
+  [key: string]: string;
+};
 
-export type DraggableAnchor = "left" | "right" | "top" | "bottom"
-/**
- * Configuration options for the draggable directive
- */
-export type DraggableOptions = {
-  /** CSS custom variable property to be updated */
-  property: string;
-  /** Placement of the draggable element within its parent, default: 'right' */
-  anchor?: DraggableAnchor;
-  /** Nearest grid parent class name */
-  gridSelector?: string;
+export type FileDescriptor = {
+  id: string;
+  name: string;
+  selected: boolean;
+  metadata: FileMetadata;
+  href: string;
+  mimeType: string;
+  path: string;
+  children?: FileDescriptor[];
+};
+
+export type SelectedFile = Omit<FileDescriptor, "children" | "selected">;
+
+export type SelectedFiles = {
+  [id: string]: SelectedFile;
+};
+
+export type SelectedFilesContext = {
+  selectItems: (...items: Array<SelectedFile>) => void;
+  deselectItems: (...items: Array<SelectedFile>) => void;
+};
+
+export type HighlightedItem = {
+  highlightItem?: FileDescriptor | null;
+  highlightStyle?: string | null;
 };
