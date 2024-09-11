@@ -5,7 +5,7 @@
         LastItem,
         SelectedFile,
         SelectedFiles,
-        FileTreeContext,
+        FileTreeContext, ExpandedFolders, ExpandedFolder,
     } from "./types";
     import FileTreeItem from "./FileTreeItem.svelte";
     import {createEventDispatcher, setContext} from "svelte";
@@ -13,6 +13,7 @@
 
     export let fileDesc: FileDescriptor;
     export let selectedFiles: SelectedFiles = {};
+    export let expandedFolders: ExpandedFolders = {};
 
     export let notSelectable = false;
     export let noMenuBar = false;
@@ -50,19 +51,19 @@
         selectedFiles = selectedFiles;
     }
 
-    function expandItems(...items: Array<SelectedFile>) {
+    function expandItems(...items: Array<ExpandedFolder>) {
         for (const item of items) {
-            if (item.mimeType !== "folder") {
-                selectedFiles[item.id] = item;
+            if (item.mimeType === "folder") {
+                expandedFolders[item.id] = item;
             }
         }
     }
 
-    function collapseItems(...items: Array<SelectedFile>) {
+    function collapseItems(...items: Array<ExpandedFolder>) {
         for (const item of items) {
-            delete selectedFiles[item.id];
+            delete expandedFolders[item.id];
         }
-        selectedFiles = selectedFiles;
+        expandedFolders = expandedFolders;
     }
 
     setContext<FileTreeContext>("selectedFiles", {
@@ -122,7 +123,6 @@
                             {@const childDesc = {
                                 ...child,
                                 selected: fileDesc.selected,
-                                expanded: fileDesc.expanded || false,
                             }}
                             {#key `${childDesc.id}#${childDesc.selected}`}
                                 <li>
@@ -134,7 +134,8 @@
                                             {lastItem}
                                             {noFolderClick}
                                     >
-                                        <slot name="loading-item"></slot>
+                                        <slot name="item-loading" slot="item-loading"></slot>
+                                        <slot name="item-actions" slot="item-actions"></slot>
                                     </FileTreeItem>
                                 </li>
                             {/key}
@@ -142,7 +143,7 @@
                         {#if lastItem}
                             <li class="last-item">
                                 <ItemRenderer {fileDesc} item={lastItem}>
-                                    <slot name="loading-item"></slot>
+                                    <slot name="item-loading"></slot>
                                 </ItemRenderer>
                             </li>
                         {/if}

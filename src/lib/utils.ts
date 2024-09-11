@@ -24,8 +24,38 @@ function setOnEscListener(listener: (e: KeyboardEvent) => boolean) {
     window.addEventListener('keydown', _listener);
 }
 
-export {
-    css,
-    setOnEscListener
+function waitForStylesheet(href: string): Promise<void> {
+    return new Promise((resolve) => {
+        const existingLink = document.querySelector(`link[href="${href}"]`);
+        if (existingLink) {
+            // If the stylesheet is already in the document, resolve immediately
+            resolve();
+        } else {
+            // Otherwise, wait for the stylesheet to load
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    const addedNodes = mutation.addedNodes;
+                    for (let i = 0; i < addedNodes.length; i++) {
+                        const node = addedNodes[i] as HTMLLinkElement;
+                        if (node.tagName === 'LINK' && node.href.includes(href)) {
+                            observer.disconnect();
+                            node.onload = () => resolve();
+                            return;
+                        }
+                    }
+                });
+            });
+
+            observer.observe(document.head, {
+                childList: true,
+                subtree: true
+            });
+        }
+    });
 }
 
+export {
+    css,
+    setOnEscListener,
+    waitForStylesheet
+}

@@ -17,17 +17,23 @@ export type FileDescriptor = {
     children?: FileDescriptor[];
 };
 
-export type SelectedFile = Omit<FileDescriptor, 'children' | 'selected' | 'expanded'>;
+export type SelectedFile = Omit<FileDescriptor, 'children' | 'selected'>;
 
 export type SelectedFiles = {
     [id: string]: SelectedFile;
 };
 
+export type ExpandedFolder = Omit<FileDescriptor, 'children' | 'expanded'>;
+
+export type ExpandedFolders = {
+  [id: string]: ExpandedFolder;
+};
+
 export type FileTreeContext = {
     selectItems: (...items: Array<SelectedFile>) => void;
     deselectItems: (...items: Array<SelectedFile>) => void;
-    expandItems: (...items: Array<SelectedFile>) => void;
-    collapseItems: (...items: Array<SelectedFile>) => void;
+    expandItems: (...items: Array<ExpandedFolder>) => void;
+    collapseItems: (...items: Array<ExpandedFolder>) => void;
 };
 
 export type HighlightedItem = {
