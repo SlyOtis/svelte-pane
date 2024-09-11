@@ -5,7 +5,7 @@
         LastItem,
         SelectedFile,
         SelectedFiles,
-        SelectedFilesContext,
+        FileTreeContext,
     } from "./types";
     import FileTreeItem from "./FileTreeItem.svelte";
     import {createEventDispatcher, setContext} from "svelte";
@@ -50,9 +50,26 @@
         selectedFiles = selectedFiles;
     }
 
-    setContext<SelectedFilesContext>("selectedFiles", {
+    function expandItems(...items: Array<SelectedFile>) {
+        for (const item of items) {
+            if (item.mimeType !== "folder") {
+                selectedFiles[item.id] = item;
+            }
+        }
+    }
+
+    function collapseItems(...items: Array<SelectedFile>) {
+        for (const item of items) {
+            delete selectedFiles[item.id];
+        }
+        selectedFiles = selectedFiles;
+    }
+
+    setContext<FileTreeContext>("selectedFiles", {
         selectItems,
         deselectItems,
+        expandItems,
+        collapseItems
     });
 
     $: selectedFilesCount = Object.keys(selectedFiles).length;
@@ -105,6 +122,7 @@
                             {@const childDesc = {
                                 ...child,
                                 selected: fileDesc.selected,
+                                expanded: fileDesc.expanded || false,
                             }}
                             {#key `${childDesc.id}#${childDesc.selected}`}
                                 <li>
