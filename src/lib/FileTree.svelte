@@ -1,19 +1,22 @@
 <script lang="ts">
+    import "./index.css"
     import type {
         FileDescriptor,
+        LastItem,
         SelectedFile,
         SelectedFiles,
         SelectedFilesContext,
     } from "./types";
     import FileTreeItem from "./FileTreeItem.svelte";
-    import { createEventDispatcher, setContext } from "svelte";
+    import {createEventDispatcher, setContext} from "svelte";
+    import ItemRenderer from "./ItemRenderer.svelte";
 
     export let fileDesc: FileDescriptor;
     export let selectedFiles: SelectedFiles = {};
 
     export let notSelectable = false;
     export let noMenuBar = false;
-    export let noLastItem = false;
+    export let lastItem: LastItem = null;
     export let noFolderClick = false;
 
     const dispatch = createEventDispatcher();
@@ -23,11 +26,14 @@
         fileDesc.selected = false;
     }
 
-    function onDelete() {}
+    function onDelete() {
+    }
 
-    function onTag() {}
+    function onTag() {
+    }
 
-    function onArchive() {}
+    function onArchive() {
+    }
 
     function selectItems(...items: Array<SelectedFile>) {
         for (const item of items) {
@@ -63,7 +69,7 @@
                             <span class="text"><b>{selectedFilesCount}</b></span
                             >
                             <span class="material-symbols-outlined"
-                                >select_check_box</span
+                            >select_check_box</span
                             >
                             <span class="text">Deselect</span>
                         </button>
@@ -103,23 +109,23 @@
                             {#key `${childDesc.id}#${childDesc.selected}`}
                                 <li>
                                     <FileTreeItem
-                                        fileDesc={childDesc}
-                                        on:click
-                                        on:selected
-                                        {notSelectable}
-                                        {noLastItem}
-                                        {noFolderClick}
+                                            fileDesc={childDesc}
+                                            on:click
+                                            on:selected
+                                            {notSelectable}
+                                            {lastItem}
+                                            {noFolderClick}
                                     >
-                                        {#if !noLastItem}
-                                            <slot data={fileDesc}></slot>
-                                        {/if}
+                                        <slot name="loading-item"></slot>
                                     </FileTreeItem>
                                 </li>
                             {/key}
                         {/each}
-                        {#if !noLastItem}
+                        {#if lastItem}
                             <li class="last-item">
-                                <slot data={fileDesc}></slot>
+                                <ItemRenderer {fileDesc} item={lastItem}>
+                                    <slot name="loading-item"></slot>
+                                </ItemRenderer>
                             </li>
                         {/if}
                     </ul>
@@ -127,7 +133,7 @@
             {/key}
         {:else}
             <div class="empty-list">
-                <span>No items</span>
+                <slot name="empty-list"></slot>
             </div>
         {/if}
     </div>
@@ -205,6 +211,7 @@
         width: 100%;
         height: 100%;
         overflow-y: auto;
+        overflow-x: hidden;
     }
 
     .files {
