@@ -41,11 +41,18 @@ export type HighlightedItem = {
     highlightStyle?: string | null;
 };
 
+export type LastItemComp = { default: ComponentType }
+
+export type ImportLastItem =
+    | ((data: FileDescriptor) => LastItemComp)  // for synchronously imported components
+    | (() => LastItemComp)  // for synchronously imported components
+    | ((data: FileDescriptor) => Promise<LastItemComp>)  // for asynchronously imported components
+    | (() => Promise<LastItemComp>)
+
 export type LastItem =
     | string  // for raw HTML
     | ComponentType  // for Svelte components
-    | { default: ComponentType }  // for synchronously imported components
-    | ((data: FileDescriptor) => { default: ComponentType })  // for synchronously imported components
-    | ((data: FileDescriptor) => Promise<{ default: ComponentType }>)  // for asynchronously imported components
+    | LastItemComp  // for synchronously imported components
+    | ImportLastItem
     | null
     | undefined

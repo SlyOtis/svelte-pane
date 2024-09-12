@@ -134,8 +134,9 @@
                                             {lastItem}
                                             {noFolderClick}
                                     >
-                                        <slot name="item-loading" slot="item-loading"></slot>
-                                        <slot name="item-actions" slot="item-actions"></slot>
+                                        <slot name="item-loading" slot="item-loading" data={fileDesc}></slot>
+                                        <slot name="item-actions" slot="item-actions" data={fileDesc}></slot>
+                                        <slot name="item-no-content" slot="item-no-content" data={fileDesc}></slot>
                                     </FileTreeItem>
                                 </li>
                             {/key}
@@ -143,7 +144,8 @@
                         {#if lastItem}
                             <li class="last-item">
                                 <ItemRenderer {fileDesc} item={lastItem}>
-                                    <slot name="item-loading"></slot>
+                                    <slot name="item-loading" slot="loading" data={fileDesc}></slot>
+                                    <slot name="item-no-content" slot="no-content" data={fileDesc}></slot>
                                 </ItemRenderer>
                             </li>
                         {/if}
@@ -152,13 +154,28 @@
             {/key}
         {:else}
             <div class="empty-list">
-                <slot name="empty-list"></slot>
+                <slot name="empty-list" data={fileDesc}></slot>
             </div>
         {/if}
     </div>
 </div>
 
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    :root {
+        --sly-color-control: gray;
+        --sly-color-content: gray;
+        --sly-color-no-content: gray;
+        --sly-color-hover: gray;
+        --sly-color-select: gray;
+        --sly-color-on-content: white;
+        --sly-color-on-hover: white;
+        --sly-color-on-select: white;
+    }
+
     .root {
         position: relative;
         width: 100%;

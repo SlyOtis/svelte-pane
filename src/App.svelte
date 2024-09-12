@@ -20,21 +20,30 @@
 </script>
 
 <main class="root page-root">
-    <FileTree
-            {fileDesc}
-            on:click={onClick}
-            on:selected={onSelected}
-            bind:selectedFiles
-            lastItem={(data) => import("./lastItemTest.svelte")}
-            noFolderClick
-    >
-        <div slot="item-actions">
-            <button><span class="material-symbols-outlined">delete</span></button>
-        </div>
-        <div slot="item-loading">
-            <span>Loading...</span>
-        </div>
-    </FileTree>
+    <section>
+        <FileTree
+                {fileDesc}
+                on:click={onClick}
+                on:selected={onSelected}
+                bind:selectedFiles
+                lastItem={(data) => {
+                    if (data) {
+                        data.name
+                    }
+                }}
+                noFolderClick
+        >
+            <div slot="item-actions">
+                <button><span class="material-symbols-outlined">delete</span></button>
+            </div>
+            <div slot="item-loading">
+                <span>Loading...</span>
+            </div>
+            <div slot="item-no-content" let:data>
+                <span>Failed to load content for {data.name}</span>
+            </div>
+        </FileTree>
+    </section>
 </main>
 
 <style>
@@ -43,8 +52,23 @@
         width: 100%;
         height: 100%;
         display: flex;
-        justify-content: start;
-        align-items: start;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    section {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        max-width: 800px;
+        max-height: 800px;
+        border: 1px solid gray;
+        border-radius: 12px;
         overflow: hidden;
     }
 </style>
