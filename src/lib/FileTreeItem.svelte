@@ -10,6 +10,7 @@
     import { css } from "./utils";
     import {getHighlightContext} from "./index";
     import ItemRenderer from "./ItemRenderer.svelte";
+    import {writable} from "svelte/store";
 
     export let fileDesc: FileDescriptor;
     export let depth = 0;
@@ -18,6 +19,7 @@
     export let noFolderClick = false;
 
     const dispatch = createEventDispatcher();
+    const isExpanded = writable(fileDesc.expanded || false)
 
     function getIcon(is_expanded: boolean, descriptor: FileDescriptor) {
         if (/\bfolder\b/i.test(descriptor.mimeType)) {
@@ -44,14 +46,12 @@
         return "folder";
     }
 
-    $: icon = getIcon(fileDesc?.expanded || false, fileDesc);
-
     const { selectItems, deselectItems, expandItems, collapseItems } =
         getContext<FileTreeContext>("selectedFiles");
 
     function onItemClick() {
         if (fileDesc.mimeType === "folder") {
-            fileDesc.expanded = !fileDesc.expanded;
+            isExpanded.update(state => !state)
 
             if (fileDesc.expanded) {
                 expandItems(fileDesc)
@@ -107,7 +107,9 @@
     $: indentedStyle = css`
         padding-left: calc(16px * ${depth + 1});
     `;
+
     let headerStyle = indentedStyle;
+
     $: {
         if (
             $highlightContext?.highlightItem?.id == fileDesc.id &&
@@ -118,27 +120,28 @@
             headerStyle = indentedStyle;
         }
     }
+
+    $: icon = getIcon($isExpanded, fileDesc);
 </script>
 
 <ul class="root">
-    <li class="header" style={headerStyle}>
+    <li class="item" style={headerStyle}>
         <div class="start">
             {#if !notSelectable}
                 <Checkbox checked={fileDesc.selected} on:checked={onItemSelected} />
             {/if}
-
         </div>
-        <button on:click={onItemClick} class="item-name">
+        <button on:click={onItemClick} class="name">
             <span class="material-symbols-outlined">{icon}</span>
             <span>{fileDesc.name}</span>
         </button>
         <div class="end">
-            <slot name="item-actions"></slot>
+            <slot name="item-actions" data={fileDesc}></slot>
         </div>
     </li>
-    {#if fileDesc.children && fileDesc.expanded}
+    {#if fileDesc.children && $isExpanded}
         {#each fileDesc.children as child}
-            {@const childDesc = { ...child, selected: fileDesc.selected}}
+            {@const childDesc = { ...child, selected: fileDesc.selected, expanded: $isExpanded}}
             {#key `${childDesc.id}#${childDesc.selected}`}
                 <li>
                     <svelte:self
@@ -153,6 +156,7 @@
                         {#if lastItem && fileDesc.mimeType === "folder"}
                             <slot name="item-loading" data={fileDesc}></slot>
                             <slot name="item-actions" data={fileDesc}></slot>
+                            <slot name="item-no-content" data={fileDesc}></slot>
                         {/if}
                     </svelte:self>
                 </li>
@@ -166,7 +170,8 @@
                     : depth + 1})"
             >
                 <ItemRenderer {fileDesc} item={lastItem}>
-                    <slot name="item-loading" data={fileDesc}></slot>
+                    <slot name="item-loading" slot="loading" data={fileDesc}></slot>
+                    <slot name="item-no-content" slot="no-content" data={fileDesc}></slot>
                 </ItemRenderer>
             </li>
         {/if}
@@ -174,6 +179,10 @@
 </ul>
 
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
     ul,
     li {
         position: relative;
@@ -182,8 +191,8 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        color: var(--color-on-content);
-        background: var(--color-content);
+        color: var(--sly-color-on-content);
+        background: var(--sly-color-content);
     }
 
     button {
@@ -194,12 +203,12 @@
         cursor: pointer;
     }
 
-    .header {
+    .item {
         position: relative;
         display: flex;
         justify-content: start;
         align-items: center;
-        border-bottom: 1px solid var(--color-control);
+        border-bottom: 1px solid var(--sly-color-control);
         width: 100%;
         height: auto;
         padding: 8px 16px;
@@ -207,7 +216,12 @@
         box-sizing: border-box;
     }
 
-    .header > .item-name {
+    .item:hover {
+        color: var(--sly-color-on-hover);
+        background-color: var(--sly-color-hover);
+    }
+
+    .item > .name {
         position: relative;
         display: flex;
         justify-content: start;
@@ -216,7 +230,7 @@
         gap: 8px;
     }
 
-    .header > .start, .header > .end {
+    .item > .start, .item > .end {
         position: relative;
         display: flex;
         justify-content: start;
@@ -224,6 +238,6 @@
     }
 
     .last-item {
-        border-bottom: 1px solid var(--color-control);
+        border-bottom: 1px solid var(--sly-color-control);
     }
 </style>

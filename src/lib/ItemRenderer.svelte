@@ -9,6 +9,7 @@
     let renderedComponent: ComponentType | null = null;
     let htmlContent: string | null = null;
     let isLoading = true
+    let compError: any | null = null
 
     function isSvelteComponent(func: any): func is ComponentType {
         return func.$$render !== undefined;
@@ -38,8 +39,7 @@
                 renderedComponent = item.default;
             }
         } catch (error) {
-            console.error('Error rendering item:', error);
-            htmlContent = `<p>Error: ${error}</p>`;
+            compError = error;
         } finally {
             isLoading = false;
         }
@@ -50,14 +50,15 @@
     });
 
     $: if (item || fileDesc) renderItem();
+
 </script>
 
 {#if isLoading}
-    <slot data={fileDesc}></slot>
+    <slot name="loading" data={fileDesc}></slot>
 {:else if htmlContent !== null}
     {@html htmlContent}
 {:else if renderedComponent}
     <svelte:component this={renderedComponent} />
 {:else}
-    <p>No content to display</p>
+    <slot name="no-content" data={fileDesc}></slot>
 {/if}
