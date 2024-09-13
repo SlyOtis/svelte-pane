@@ -6,9 +6,9 @@
         SelectedFiles,
         FileTreeContext,
     } from "./types";
-    import { createEventDispatcher, getContext } from "svelte";
+    import {createEventDispatcher, getContext} from "svelte";
     import Checkbox from "./Checkbox.svelte";
-    import { css } from "./utils";
+    import {css} from "./utils";
     import {getHighlightContext} from "./index";
     import ItemRenderer from "./ItemRenderer.svelte";
 
@@ -22,7 +22,7 @@
 
     function getIcon(is_expanded: boolean, descriptor: FileDescriptor) {
         if (/\bfolder\b/i.test(descriptor.mimeType)) {
-            return is_expanded ? "folder_open": "folder"
+            return is_expanded ? "folder_open" : "folder"
         }
 
 
@@ -45,12 +45,10 @@
         return "folder";
     }
 
-    const { selectItems, deselectItems, expandFolders, collapseFolders, expandedItems } =
+    const {selectItems, deselectItems, expandFolders, collapseFolders, expandedItems} =
         getContext<FileTreeContext>("file-tree-context");
 
     $: isExpanded = $expandedItems.includes(fileDesc.id)
-
-    $: console.log($expandedItems)
 
     function onItemClick() {
         if (fileDesc.mimeType === "folder") {
@@ -130,7 +128,7 @@
     <li class="tree-item" style={itemStyle}>
         <div class="start">
             {#if !notSelectable}
-                <Checkbox checked={fileDesc.selected} on:checked={onItemSelected} />
+                <Checkbox checked={fileDesc.selected} on:checked={onItemSelected}/>
             {/if}
         </div>
         <button on:click={onItemClick} class="name">
@@ -143,35 +141,30 @@
     </li>
     {#if fileDesc.children && isExpanded}
         {#each fileDesc.children as child}
-            {@const childDesc = { ...child, selected: fileDesc.selected, expanded: isExpanded}}
+            {@const childDesc = {...child, selected: fileDesc.selected, expanded: isExpanded}}
             {#key `${childDesc.id}#${childDesc.selected}`}
                 <li>
                     <svelte:self
-                        fileDesc={childDesc}
-                        depth={depth + 1}
-                        on:click
-                        on:selected
-                        {notSelectable}
-                        {lastItem}
-                        {noFolderClick}
+                            fileDesc={childDesc}
+                            depth={depth + 1}
+                            on:click
+                            on:selected
+                            {notSelectable}
+                            {lastItem}
+                            {noFolderClick}
                     >
-                        {#if lastItem && fileDesc.mimeType === "folder"}
-                            <slot name="item-loading" data={fileDesc}></slot>
-                            <slot name="item-actions" data={fileDesc}></slot>
-                            <slot name="item-no-content" data={fileDesc}></slot>
-                        {/if}
+                        <slot name="item-loading" slot="item-loading" data={fileDesc}></slot>
+                        <slot name="item-actions" slot="item-actions" data={fileDesc}></slot>
+                        <slot name="item-no-content" slot="item-no-content" data={fileDesc}></slot>
                     </svelte:self>
                 </li>
             {/key}
         {/each}
         {#if lastItem && fileDesc.mimeType === "folder"}
             <li
-                class="last-item"
-                style="padding-left: calc(16px * {!notSelectable
-                    ? depth
-                    : depth + 1})"
+                    class="last-item"
             >
-                <ItemRenderer {fileDesc} item={lastItem}>
+                <ItemRenderer {fileDesc} item={lastItem} depth={depth}>
                     <slot name="item-loading" slot="loading" data={fileDesc}></slot>
                     <slot name="item-no-content" slot="no-content" data={fileDesc}></slot>
                 </ItemRenderer>
