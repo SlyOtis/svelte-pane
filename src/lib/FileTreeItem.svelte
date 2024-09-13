@@ -1,4 +1,5 @@
 <script lang="ts">
+    import "./index.css"
     import type {
         FileDescriptor, LastItem,
         SelectedFile,
@@ -10,7 +11,6 @@
     import { css } from "./utils";
     import {getHighlightContext} from "./index";
     import ItemRenderer from "./ItemRenderer.svelte";
-    import {writable} from "svelte/store";
 
     export let fileDesc: FileDescriptor;
     export let depth = 0;
@@ -19,7 +19,6 @@
     export let noFolderClick = false;
 
     const dispatch = createEventDispatcher();
-    const isExpanded = writable(fileDesc.expanded || false)
 
     function getIcon(is_expanded: boolean, descriptor: FileDescriptor) {
         if (/\bfolder\b/i.test(descriptor.mimeType)) {
@@ -46,17 +45,20 @@
         return "folder";
     }
 
-    const { selectItems, deselectItems, expandItems, collapseItems } =
-        getContext<FileTreeContext>("selectedFiles");
+    const { selectItems, deselectItems, expandFolders, collapseFolders, expandedItems } =
+        getContext<FileTreeContext>("file-tree-context");
+
+    $: isExpanded = $expandedItems.includes(fileDesc.id)
+
+    $: console.log($expandedItems)
 
     function onItemClick() {
         if (fileDesc.mimeType === "folder") {
-            isExpanded.update(state => !state)
-
-            if (fileDesc.expanded) {
-                expandItems(fileDesc)
+            console.log('We are expanding')
+            if (isExpanded) {
+                collapseFolders(fileDesc.id)
             } else {
-                collapseItems(fileDesc)
+                expandFolders(fileDesc.id)
             }
 
             if (!noFolderClick) {
@@ -108,24 +110,24 @@
         padding-left: calc(16px * ${depth + 1});
     `;
 
-    let headerStyle = indentedStyle;
+    let itemStyle = indentedStyle;
 
     $: {
         if (
             $highlightContext?.highlightItem?.id == fileDesc.id &&
             $highlightContext?.highlightStyle
         ) {
-            headerStyle = `${indentedStyle}${$highlightContext?.highlightStyle}`;
+            itemStyle = `${indentedStyle}${$highlightContext?.highlightStyle}`;
         } else {
-            headerStyle = indentedStyle;
+            itemStyle = indentedStyle;
         }
     }
 
-    $: icon = getIcon($isExpanded, fileDesc);
+    $: icon = getIcon(isExpanded, fileDesc);
 </script>
 
 <ul class="root">
-    <li class="item" style={headerStyle}>
+    <li class="tree-item" style={itemStyle}>
         <div class="start">
             {#if !notSelectable}
                 <Checkbox checked={fileDesc.selected} on:checked={onItemSelected} />
@@ -139,9 +141,9 @@
             <slot name="item-actions" data={fileDesc}></slot>
         </div>
     </li>
-    {#if fileDesc.children && $isExpanded}
+    {#if fileDesc.children && isExpanded}
         {#each fileDesc.children as child}
-            {@const childDesc = { ...child, selected: fileDesc.selected, expanded: $isExpanded}}
+            {@const childDesc = { ...child, selected: fileDesc.selected, expanded: isExpanded}}
             {#key `${childDesc.id}#${childDesc.selected}`}
                 <li>
                     <svelte:self
@@ -181,6 +183,7 @@
 <style>
     * {
         box-sizing: border-box;
+        border-collapse: collapse;
     }
 
     ul,
@@ -195,33 +198,26 @@
         background: var(--sly-color-content);
     }
 
-    button {
-        background: none;
-        color: inherit;
-        outline: none;
-        border: none;
-        cursor: pointer;
-    }
 
-    .item {
+    .tree-item {
         position: relative;
         display: flex;
         justify-content: start;
         align-items: center;
-        border-bottom: 1px solid var(--sly-color-control);
         width: 100%;
         height: auto;
         padding: 8px 16px;
         overflow: hidden;
         box-sizing: border-box;
+        border-bottom: 1px solid var(--sly-color-control);
     }
 
-    .item:hover {
+    .tree-item:hover {
         color: var(--sly-color-on-hover);
         background-color: var(--sly-color-hover);
     }
 
-    .item > .name {
+    .tree-item > .name {
         position: relative;
         display: flex;
         justify-content: start;
@@ -230,11 +226,19 @@
         gap: 8px;
     }
 
-    .item > .start, .item > .end {
+    .tree-item > .start, .tree-item > .end {
         position: relative;
         display: flex;
         justify-content: start;
         align-items: center;
+    }
+
+    button {
+        background: none;
+        color: inherit;
+        outline: none;
+        border: none;
+        cursor: pointer;
     }
 
     .last-item {

@@ -1,4 +1,5 @@
 import type {ComponentType} from 'svelte';
+import type {Writable} from "svelte/store";
 
 export type FileMetadata = {
     key: string;
@@ -32,8 +33,9 @@ export type ExpandedFolders = {
 export type FileTreeContext = {
     selectItems: (...items: Array<SelectedFile>) => void;
     deselectItems: (...items: Array<SelectedFile>) => void;
-    expandItems: (...items: Array<ExpandedFolder>) => void;
-    collapseItems: (...items: Array<ExpandedFolder>) => void;
+    expandFolders: (...items: Array<string>) => void;
+    collapseFolders: (...items: Array<string>) => void;
+    expandedItems: Writable<Array<string>>
 };
 
 export type HighlightedItem = {
@@ -56,3 +58,8 @@ export type LastItem =
     | ImportLastItem
     | null
     | undefined
+
+export type ItemExpandedState = {
+    touched: boolean
+    expanded: boolean
+}
