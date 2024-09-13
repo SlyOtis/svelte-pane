@@ -1,17 +1,22 @@
 import type {ComponentType} from 'svelte';
-import type {Writable} from "svelte/store";
+import type {Readable} from "svelte/store";
 
 export type FileMetadata = {
-    key: string;
-    value: string | number;
-}[];
+    name: string;
+    value: string | number | Date | boolean;
+    hidden?: boolean
+};
+
+export type FileMetadataDescriptor = {
+    [key: string]: FileMetadata;
+}
 
 export type FileDescriptor = {
     id: string;
     name: string;
     selected: boolean;
     expanded?: boolean
-    metadata: FileMetadata;
+    metadata?: FileMetadataDescriptor;
     href: string;
     mimeType: string;
     path: string;
@@ -24,18 +29,35 @@ export type SelectedFiles = {
     [id: string]: SelectedFile;
 };
 
+export type FileGroup = {
+    name: string,
+    icon?: string,
+    orderOf: 'date' | 'number' | 'string' | 'boolean'
+}
+
+export type FileGrouping = {
+    [key: string]: FileGroup
+};
+
 export type ExpandedFolder = Omit<FileDescriptor, 'children' | 'expanded'>;
 
 export type ExpandedFolders = {
   [id: string]: ExpandedFolder;
 };
 
+export type SortGroup = {
+    key: string,
+    order: 'asc' | 'desc',
+} & Pick<FileGroup, 'orderOf'>
+
 export type FileTreeContext = {
     selectItems: (...items: Array<SelectedFile>) => void;
     deselectItems: (...items: Array<SelectedFile>) => void;
     expandFolders: (...items: Array<string>) => void;
     collapseFolders: (...items: Array<string>) => void;
-    expandedItems: Writable<Array<string>>
+    sortItems: (sortGroup: SortGroup) => void;
+    sortGroup: Readable<SortGroup | undefined>
+    expandedItems: Readable<Array<string>>
 };
 
 export type HighlightedItem = {

@@ -26,12 +26,19 @@
                 on:click={onClick}
                 on:selected={onSelected}
                 bind:selectedFiles
-                lastItem={(data) => {
-                    if (data) {
-                        data.name
+                noFolderClick
+                fileGrouping={{
+                    "size": {
+                        name: "File size",
+                        orderOf: 'number'
+                    },
+                    "created_at": {
+                        name: "Created At",
+                        orderOf: 'date',
+                        icon: 'event'
                     }
                 }}
-                noFolderClick
+
         >
             <div slot="item-actions">
                 <button><span class="material-symbols-outlined">delete</span></button>

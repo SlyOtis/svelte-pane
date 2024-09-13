@@ -5,15 +5,19 @@
         LastItem,
         SelectedFile,
         SelectedFiles,
-        FileTreeContext, ExpandedFolders, ExpandedFolder,
+        FileTreeContext, ExpandedFolders, ExpandedFolder, FileGrouping, FileGroup, SortGroup,
     } from "./types";
     import FileTreeItem from "./FileTreeItem.svelte";
     import {createEventDispatcher, setContext} from "svelte";
     import ItemRenderer from "./ItemRenderer.svelte";
     import {writable} from "svelte/store";
+    import SelectionBar from "./SelectionBar.svelte";
+    import MenuBar from "./ActionBar.svelte";
+    import {orderItems} from "./utils";
 
     export let fileDesc: FileDescriptor;
     export let selectedFiles: SelectedFiles = {};
+    export let fileGrouping: FileGrouping | undefined = undefined
 
     export let notSelectable = false;
     export let noMenuBar = false;
@@ -21,7 +25,8 @@
     export let noFolderClick = false;
     export let noIndentation = false
 
-    let expandedItems = writable<Array<string>>([])
+    const expandedItems = writable<Array<string>>([])
+    const sortGroup = writable<SortGroup | undefined>(undefined)
 
     const dispatch = createEventDispatcher();
 
@@ -58,57 +63,38 @@
         expandedItems.update(state => ([...state, ...items]))
     }
 
-    function collapseItems(...items: Array<string>) {
+    function collapseFolders(...items: Array<string>) {
         expandedItems.update(state => state.filter(value => !items.includes(value)))
+    }
+
+    function sortItems(group: SortGroup) {
+        sortGroup.set(group)
     }
 
     setContext<FileTreeContext>("file-tree-context", {
         selectItems,
         deselectItems,
         expandFolders,
-        collapseFolders: collapseItems,
+        collapseFolders,
+        sortItems,
+        sortGroup,
         expandedItems
     });
 
     $: selectedFilesCount = Object.keys(selectedFiles).length;
+    $: displayKeys = fileGrouping ? Object.keys(fileGrouping) : []
 </script>
 
 <div class="root">
     {#if !noMenuBar}
         <div class="header">
-            <span><b>{fileDesc.name}</b></span>
-            <ul>
-                {#if selectedFilesCount > 0 && !notSelectable}
-                    <li>
-                        <button on:click={onDeselect}>
-                            <span class="text"><b>{selectedFilesCount}</b></span
-                            >
-                            <span class="material-symbols-outlined"
-                            >select_check_box</span
-                            >
-                            <span class="text">Deselect</span>
-                        </button>
-                    </li>
-                {/if}
-                <li>
-                    <button>
-                        <span class="material-symbols-outlined">archive</span>
-                        <span class="text">Archive</span>
-                    </button>
-                </li>
-                <li>
-                    <button>
-                        <span class="material-symbols-outlined">tag</span>
-                        <span class="text">Tag</span>
-                    </button>
-                </li>
-                <li>
-                    <button>
-                        <span class="material-symbols-outlined">delete</span>
-                        <span class="text">Delete</span>
-                    </button>
-                </li>
-            </ul>
+            {#if !notSelectable && selectedFilesCount > 0}
+                <SelectionBar>
+                    <slot name="selection-actions"/>
+                </SelectionBar>
+            {:else}
+                <MenuBar folderName={fileDesc.name} {fileGrouping}/>
+            {/if}
         </div>
     {/if}
     <div class="inner">
@@ -116,7 +102,7 @@
             {#key `${fileDesc.id}#${fileDesc.selected}`}
                 <div class="files">
                     <ul>
-                        {#each fileDesc.children as child}
+                        {#each orderItems(fileDesc.children, $sortGroup)  as child}
                             {@const childDesc = {
                                 ...child,
                                 selected: fileDesc.selected,
@@ -131,6 +117,7 @@
                                             {lastItem}
                                             {noFolderClick}
                                             {noIndentation}
+                                            {displayKeys}
                                     >
                                         <slot name="item-loading" slot="item-loading" data={fileDesc}></slot>
                                         <slot name="item-actions" slot="item-actions" data={fileDesc}></slot>
@@ -172,6 +159,9 @@
         --sly-color-on-content: white;
         --sly-color-on-hover: white;
         --sly-color-on-select: white;
+        --sly-color-metadata: rgba(75, 218, 237, 0.6);
+        --sly-color-on-metadata: white;
+        --sly-color-header: transparent;
     }
 
     .root {
@@ -193,15 +183,8 @@
         justify-content: space-between;
         align-items: center;
         flex-direction: row;
-        background: var(--color-secondary);
-    }
-
-    .header > ul {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: row;
-        gap: 16px;
+        background: var(--sly-color-header);
+        border-bottom: 1px solid var(--sly-color-control);
     }
 
     ul,
@@ -210,31 +193,6 @@
         padding: 0;
         margin: 0;
         color: var(--color-on-secondary);
-    }
-
-    button {
-        position: relative;
-        border-radius: 50%;
-        width: auto;
-        height: 24px;
-        border: none;
-        outline: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: row;
-        gap: 8px;
-        background: none;
-        color: inherit;
-    }
-
-    button > .text {
-        font-size: 0.8em;
-    }
-
-    button:hover {
-        cursor: pointer;
-        color: var(--color-primary);
     }
 
     .inner {
