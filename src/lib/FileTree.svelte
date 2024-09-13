@@ -10,15 +10,17 @@
     import FileTreeItem from "./FileTreeItem.svelte";
     import {createEventDispatcher, setContext} from "svelte";
     import ItemRenderer from "./ItemRenderer.svelte";
+    import {writable} from "svelte/store";
 
     export let fileDesc: FileDescriptor;
     export let selectedFiles: SelectedFiles = {};
-    export let expandedFolders: ExpandedFolders = {};
 
     export let notSelectable = false;
     export let noMenuBar = false;
     export let lastItem: LastItem = null;
     export let noFolderClick = false;
+
+    let expandedItems = writable<Array<string>>([])
 
     const dispatch = createEventDispatcher();
 
@@ -51,26 +53,20 @@
         selectedFiles = selectedFiles;
     }
 
-    function expandItems(...items: Array<ExpandedFolder>) {
-        for (const item of items) {
-            if (item.mimeType === "folder") {
-                expandedFolders[item.id] = item;
-            }
-        }
+    function expandFolders(...items: Array<string>) {
+        expandedItems.update(state => ([...state, ...items]))
     }
 
-    function collapseItems(...items: Array<ExpandedFolder>) {
-        for (const item of items) {
-            delete expandedFolders[item.id];
-        }
-        expandedFolders = expandedFolders;
+    function collapseItems(...items: Array<string>) {
+        expandedItems.update(state => state.filter(value => !items.includes(value)))
     }
 
-    setContext<FileTreeContext>("selectedFiles", {
+    setContext<FileTreeContext>("file-tree-context", {
         selectItems,
         deselectItems,
-        expandItems,
-        collapseItems
+        expandFolders,
+        collapseFolders: collapseItems,
+        expandedItems
     });
 
     $: selectedFilesCount = Object.keys(selectedFiles).length;
@@ -167,7 +163,7 @@
 
     :root {
         --sly-color-control: gray;
-        --sly-color-content: gray;
+        --sly-color-content: transparent;
         --sly-color-no-content: gray;
         --sly-color-hover: gray;
         --sly-color-select: gray;

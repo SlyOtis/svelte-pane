@@ -1,5 +1,5 @@
 import {type Writable, writable} from "svelte/store";
-import type {FileDescriptor, HighlightedItem} from "./types";
+import type {FileDescriptor, HighlightedItem, ItemExpandedState} from "./types";
 import {getContext, setContext} from "svelte";
 
 const highlightedState = writable<HighlightedItem>();
