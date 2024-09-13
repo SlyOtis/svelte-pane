@@ -5,6 +5,7 @@
 
     export let item: LastItem;
     export let fileDesc: FileDescriptor
+    export let depth: number = 0
 
     let renderedComponent: ComponentType | null = null;
     let htmlContent: string | null = null;
@@ -54,11 +55,11 @@
 </script>
 
 {#if isLoading}
-    <slot name="loading" data={fileDesc}></slot>
+    <slot name="loading" data={fileDesc} {depth}></slot>
 {:else if htmlContent !== null}
     {@html htmlContent}
 {:else if renderedComponent}
     <svelte:component this={renderedComponent} />
 {:else}
-    <slot name="no-content" data={fileDesc}></slot>
+    <slot name="no-content" data={fileDesc} {depth}></slot>
 {/if}
