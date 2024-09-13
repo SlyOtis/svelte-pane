@@ -4,11 +4,11 @@
         FileDescriptor, LastItem,
         SelectedFile,
         SelectedFiles,
-        FileTreeContext,
+        FileTreeContext, FileMetadata,
     } from "./types";
     import {createEventDispatcher, getContext} from "svelte";
     import Checkbox from "./Checkbox.svelte";
-    import {css} from "./utils";
+    import {css, orderItems} from "./utils";
     import {getHighlightContext} from "./index";
     import ItemRenderer from "./ItemRenderer.svelte";
 
@@ -18,6 +18,7 @@
     export let lastItem: LastItem = null;
     export let noFolderClick = false;
     export let noIndentation = false;
+    export let displayKeys: Array<string> = []
 
     const dispatch = createEventDispatcher();
 
@@ -46,14 +47,19 @@
         return "folder";
     }
 
-    const {selectItems, deselectItems, expandFolders, collapseFolders, expandedItems} =
-        getContext<FileTreeContext>("file-tree-context");
+    const {
+        selectItems,
+        deselectItems,
+        expandFolders,
+        collapseFolders,
+        expandedItems,
+        sortGroup
+    } = getContext<FileTreeContext>("file-tree-context");
 
     $: isExpanded = $expandedItems.includes(fileDesc.id)
 
     function onItemClick() {
         if (fileDesc.mimeType === "folder") {
-            console.log('We are expanding')
             if (isExpanded) {
                 collapseFolders(fileDesc.id)
             } else {
@@ -123,6 +129,20 @@
     }
 
     $: icon = getIcon(isExpanded, fileDesc);
+
+    let fileMetadata: Array<FileMetadata & { key: string }>
+    $: {
+        fileMetadata = []
+        if (fileDesc.metadata) {
+            Object.keys(fileDesc.metadata).forEach(key => {
+                const data = fileDesc.metadata!![key]
+                if (!data.hidden && displayKeys.includes(key)) {
+                    fileMetadata.push({...data, key})
+                }
+            })
+        }
+    }
+
 </script>
 
 <ul class="root">
@@ -136,12 +156,22 @@
             <span class="material-symbols-outlined">{icon}</span>
             <span>{fileDesc.name}</span>
         </button>
+        {#if fileMetadata.length}
+            <ul class="metadata">
+                {#each fileMetadata as metadata}
+                    <li class="metadata-{metadata.key}">
+                        <span class="name">{metadata.name}</span>
+                        <span class="value">{metadata.value}</span>
+                    </li>
+                {/each}
+            </ul>
+        {/if}
         <div class="end">
             <slot name="item-actions" data={fileDesc}></slot>
         </div>
     </li>
     {#if fileDesc.children && isExpanded}
-        {#each fileDesc.children as child}
+        {#each orderItems(fileDesc.children, $sortGroup) as child}
             {@const childDesc = {...child, selected: fileDesc.selected, expanded: isExpanded}}
             {#key `${childDesc.id}#${childDesc.selected}`}
                 <li>
@@ -154,6 +184,7 @@
                             {lastItem}
                             {noFolderClick}
                             {noIndentation}
+                            {displayKeys}
                     >
                         <slot name="item-loading" slot="item-loading" data={fileDesc}></slot>
                         <slot name="item-actions" slot="item-actions" data={fileDesc}></slot>
@@ -226,6 +257,35 @@
         display: flex;
         justify-content: start;
         align-items: center;
+    }
+
+    .tree-item > .metadata {
+        position: relative;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        padding: 0 16px;
+        overflow: hidden;
+    }
+
+    .metadata > li {
+        position: relative;
+        width: auto;
+        border: 8px;
+        background: var(--sly-color-metadata);
+        color: var(--sly-color-on-metadata);
+        padding: 2px 6px;
+        border-radius: 12px;
+        font-size: 0.7em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        vertical-align: middle;
+    }
+
+    .metadata > li > .name {
+        font-weight: 600;
+        padding-right: 4px;
     }
 
     button {
