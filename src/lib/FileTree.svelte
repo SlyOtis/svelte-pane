@@ -19,6 +19,7 @@
     export let noMenuBar = false;
     export let lastItem: LastItem = null;
     export let noFolderClick = false;
+    export let noIndentation = false
 
     let expandedItems = writable<Array<string>>([])
 
@@ -129,6 +130,7 @@
                                             {notSelectable}
                                             {lastItem}
                                             {noFolderClick}
+                                            {noIndentation}
                                     >
                                         <slot name="item-loading" slot="item-loading" data={fileDesc}></slot>
                                         <slot name="item-actions" slot="item-actions" data={fileDesc}></slot>

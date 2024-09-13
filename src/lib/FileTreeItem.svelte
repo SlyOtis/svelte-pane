@@ -17,6 +17,7 @@
     export let notSelectable = false;
     export let lastItem: LastItem = null;
     export let noFolderClick = false;
+    export let noIndentation = false;
 
     const dispatch = createEventDispatcher();
 
@@ -104,9 +105,9 @@
 
     const highlightContext = getHighlightContext();
 
-    $: indentedStyle = css`
+    $: indentedStyle = !noIndentation ? css`
         padding-left: calc(16px * ${depth + 1});
-    `;
+    ` : '';
 
     let itemStyle = indentedStyle;
 
@@ -152,6 +153,7 @@
                             {notSelectable}
                             {lastItem}
                             {noFolderClick}
+                            {noIndentation}
                     >
                         <slot name="item-loading" slot="item-loading" data={fileDesc}></slot>
                         <slot name="item-actions" slot="item-actions" data={fileDesc}></slot>
