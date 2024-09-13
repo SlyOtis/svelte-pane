@@ -248,7 +248,7 @@
         display: flex;
         justify-content: start;
         align-items: center;
-        width: 100%;
+        width: auto;
         gap: 8px;
     }
 
@@ -265,7 +265,10 @@
         justify-content: end;
         align-items: center;
         padding: 0 16px;
-        overflow: hidden;
+        overflow-y: hidden;
+        gap: 4px;
+        overflow-x: auto;
+        width: 100%;
     }
 
     .metadata > li {
@@ -278,9 +281,13 @@
         border-radius: 12px;
         font-size: 0.7em;
         display: flex;
-        justify-content: center;
+        justify-content: start;
         align-items: center;
         vertical-align: middle;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 100%;
     }
 
     .metadata > li > .name {
