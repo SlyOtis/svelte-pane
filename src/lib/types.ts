@@ -32,13 +32,13 @@ export type SelectedFiles = {
     [id: string]: SelectedFile;
 };
 
-export type DisplayValueTransformer = <T extends string | number | boolean | Date> (value: T) => string
+export type DisplayValueTransformer<T extends string | number | boolean | Date> = (value: T) => string
 
 export type FileGroup = {
     name: string,
     icon?: string,
     orderOf: 'date' | 'number' | 'string' | 'boolean',
-    displayValue?: DisplayValueTransformer,
+    displayValue?: DisplayValueTransformer<any>,
 }
 
 export type FileGrouping = {
@@ -61,7 +61,7 @@ export type FileTreeContext = {
     deselectItems: (...items: Array<SelectedFile>) => void;
     expandFolders: (...items: Array<string>) => void;
     collapseFolders: (...items: Array<string>) => void;
-    getValueTransformer: (metadataKey: string) => (DisplayValueTransformer | undefined);
+    getValueTransformer: (metadataKey: string) => (DisplayValueTransformer<any> | undefined);
     sortItems: (sortGroup: SortGroup) => void;
     sortGroup: Readable<SortGroup | undefined>
     expandedItems: Readable<Array<string>>

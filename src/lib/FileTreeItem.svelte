@@ -1,10 +1,14 @@
 <script lang="ts">
     import "./index.css"
+    import "./fileTreeItem.css"
     import type {
-        FileDescriptor, LastItem,
+        FileDescriptor,
+        LastItem,
         SelectedFile,
         SelectedFiles,
-        FileTreeContext, FileMetadata, KeyFileMetadata,
+        FileTreeContext,
+        FileMetadata,
+        KeyFileMetadata,
     } from "./types";
     import {createEventDispatcher, getContext} from "svelte";
     import Checkbox from "./Checkbox.svelte";
@@ -19,6 +23,7 @@
     export let noFolderClick = false;
     export let noIndentation = false;
     export let displayKeys: Array<string> = []
+    export let noActionsTransition = false
 
     const dispatch = createEventDispatcher();
 
@@ -170,7 +175,7 @@
                 {/each}
             </ul>
         {/if}
-        <div class="end">
+        <div class="end" class:actions-transition={!noActionsTransition}>
             <slot name="item-actions" data={fileDesc}></slot>
         </div>
     </li>
@@ -245,6 +250,10 @@
     .tree-item:hover {
         color: var(--sly-color-on-hover);
         background-color: var(--sly-color-hover);
+    }
+
+    .tree-item:hover > .actions-transition {
+        max-width: 1000px;
     }
 
     .tree-item > .name {
