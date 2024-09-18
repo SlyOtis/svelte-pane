@@ -5,7 +5,7 @@
         LastItem,
         SelectedFile,
         SelectedFiles,
-        FileTreeContext, ExpandedFolders, ExpandedFolder, FileGrouping, FileGroup, SortGroup,
+        FileTreeContext, ExpandedFolders, ExpandedFolder, FileGrouping, FileGroup, SortGroup, DisplayValueTransformer,
     } from "./types";
     import FileTreeItem from "./FileTreeItem.svelte";
     import {createEventDispatcher, setContext} from "svelte";
@@ -71,12 +71,21 @@
         sortGroup.set(group)
     }
 
+    function getValueTransformer(metadataKey: string): DisplayValueTransformer | undefined {
+        if (!fileGrouping) {
+            return undefined
+        }
+
+        return fileGrouping?.[metadataKey]?.displayValue
+    }
+
     setContext<FileTreeContext>("file-tree-context", {
         selectItems,
         deselectItems,
         expandFolders,
         collapseFolders,
         sortItems,
+        getValueTransformer,
         sortGroup,
         expandedItems
     });

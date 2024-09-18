@@ -2,10 +2,13 @@ import type {ComponentType} from 'svelte';
 import type {Readable} from "svelte/store";
 
 export type FileMetadata = {
-    name: string;
-    value: string | number | Date | boolean;
+    name: string
+    value: string | number | Date | boolean
     hidden?: boolean
+    displayValue: DisplayValueTransformer
 };
+
+export type KeyFileMetadata = FileMetadata & { key: string }
 
 export type FileMetadataDescriptor = {
     [key: string]: FileMetadata;
@@ -29,10 +32,13 @@ export type SelectedFiles = {
     [id: string]: SelectedFile;
 };
 
+export type DisplayValueTransformer = <T extends string | number | boolean | Date> (value: T) => string
+
 export type FileGroup = {
     name: string,
     icon?: string,
-    orderOf: 'date' | 'number' | 'string' | 'boolean'
+    orderOf: 'date' | 'number' | 'string' | 'boolean',
+    displayValue?: DisplayValueTransformer,
 }
 
 export type FileGrouping = {
@@ -55,6 +61,7 @@ export type FileTreeContext = {
     deselectItems: (...items: Array<SelectedFile>) => void;
     expandFolders: (...items: Array<string>) => void;
     collapseFolders: (...items: Array<string>) => void;
+    getValueTransformer: (metadataKey: string) => (DisplayValueTransformer | undefined);
     sortItems: (sortGroup: SortGroup) => void;
     sortGroup: Readable<SortGroup | undefined>
     expandedItems: Readable<Array<string>>
