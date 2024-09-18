@@ -1,5 +1,5 @@
 <script lang="ts">
-    import FileTree, {type FileDescriptor, type SelectedFiles} from "./lib";
+    import FileTree, {displayDateISO, type FileDescriptor, type SelectedFiles} from "./lib";
     import {defaultFileTree} from "./example"
     import LastItemTest from "./LastItemTest.svelte";
 
@@ -36,9 +36,7 @@
                         name: "Created At",
                         orderOf: 'date',
                         icon: 'event',
-                        displayValue: (value) => {
-                            return "Svarte natta"
-                        },
+                        displayValue: displayDateISO,
                     }
                 }}
         >

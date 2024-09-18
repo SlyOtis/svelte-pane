@@ -184,9 +184,18 @@ function parseToBoolean(key: string, a?: FileDescriptor, b?: FileDescriptor): {v
     return {valA, valB}
 }
 
+function displayDateISO(value: Date): string {
+    return new Intl.DateTimeFormat('default', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).format(value).replace(/\//g, '.');
+}
+
 export {
     css,
     setOnEscListener,
     waitForStylesheet,
-    orderItems
+    orderItems,
+    displayDateISO,
 }

@@ -1,0 +1,22 @@
+.actions-transition {
+    position: relative;
+    will-change: max-width;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    transition: 250ms 0ms ease-out max-width;
+    max-width: 0;
+    overflow: hidden;
+    width: max-content;
+    box-sizing: border-box;
+    flex-shrink: 1;
+}
+
+.actions-transition > * {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
