@@ -171,6 +171,7 @@
         --sly-color-metadata: rgba(75, 218, 237, 0.6);
         --sly-color-on-metadata: white;
         --sly-color-header: transparent;
+        --sly-item-indentation: 16px;
     }
 
     .root {

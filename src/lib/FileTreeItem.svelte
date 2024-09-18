@@ -113,7 +113,7 @@
     const highlightContext = getHighlightContext();
 
     $: indentedStyle = !noIndentation ? css`
-        padding-left: calc(16px * ${depth + 1});
+        padding-left: calc(var(--sly-item-indentation) * ${depth + 1});
     ` : '';
 
     let itemStyle = indentedStyle;
