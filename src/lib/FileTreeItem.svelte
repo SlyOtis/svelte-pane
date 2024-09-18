@@ -4,7 +4,7 @@
         FileDescriptor, LastItem,
         SelectedFile,
         SelectedFiles,
-        FileTreeContext, FileMetadata,
+        FileTreeContext, FileMetadata, KeyFileMetadata,
     } from "./types";
     import {createEventDispatcher, getContext} from "svelte";
     import Checkbox from "./Checkbox.svelte";
@@ -52,6 +52,7 @@
         deselectItems,
         expandFolders,
         collapseFolders,
+        getValueTransformer,
         expandedItems,
         sortGroup
     } = getContext<FileTreeContext>("file-tree-context");
@@ -130,13 +131,16 @@
 
     $: icon = getIcon(isExpanded, fileDesc);
 
-    let fileMetadata: Array<FileMetadata & { key: string }>
+    let fileMetadata: Array<KeyFileMetadata>
     $: {
         fileMetadata = []
         if (fileDesc.metadata) {
             Object.keys(fileDesc.metadata).forEach(key => {
-                const data = fileDesc.metadata!![key]
+                const data = fileDesc.metadata!![key] //TODO:: Hmm
                 if (!data.hidden && displayKeys.includes(key)) {
+                    if (!data.displayValue) {
+                        data.displayValue = getValueTransformer(key) || ((value: any) => value)
+                    }
                     fileMetadata.push({...data, key})
                 }
             })
@@ -161,7 +165,7 @@
                 {#each fileMetadata as metadata}
                     <li class="metadata-{metadata.key}">
                         <span class="name">{metadata.name}</span>
-                        <span class="value">{metadata.value}</span>
+                        <span class="value">{metadata.displayValue(metadata.value)}</span>
                     </li>
                 {/each}
             </ul>

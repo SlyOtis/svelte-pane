@@ -35,10 +35,12 @@
                     "created_at": {
                         name: "Created At",
                         orderOf: 'date',
-                        icon: 'event'
+                        icon: 'event',
+                        displayValue: (value) => {
+                            return "Svarte natta"
+                        },
                     }
                 }}
-
         >
             <div slot="item-actions">
                 <button><span class="material-symbols-outlined">delete</span></button>
