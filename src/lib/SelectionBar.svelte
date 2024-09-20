@@ -1,24 +1,15 @@
 <script lang="ts">
-    import type {FileDescriptor, FileGrouping, FileTreeContext, SortGroup} from "./types";
-    import {getContext} from "svelte";
     import Checkbox from "./Checkbox.svelte";
-
-    export let notSelectable = false;
-    export let fileDesc: FileDescriptor;
-    export let noActionsTransition = false
+    import type {SelectedFiles} from "./types";
     export let selectionCount = 0
-
-    const {sortItems, sortGroup} = getContext<FileTreeContext>("file-tree-context");
-
+    export let selectedFiles: SelectedFiles
 </script>
 
 <div class="root">
-    {#if !notSelectable}
-        <Checkbox checked={true} on:checked/>
-    {/if}
+    <Checkbox checked={true} on:checked/>
     <span class="selection"><code>{selectionCount}</code><b>Files selected</b></span>
     <div class="actions">
-        <slot/>
+        <slot data={selectedFiles}/>
     </div>
 </div>
 

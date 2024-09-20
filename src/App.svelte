@@ -35,7 +35,6 @@
                     "created_at": {
                         name: "Created At",
                         orderOf: 'date',
-                        icon: 'event',
                         displayValue: displayDateISO,
                     }
                 }}

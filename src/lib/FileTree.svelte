@@ -119,13 +119,10 @@
             {#if !notSelectable && selectionCount > 0}
                 <SelectionBar
                         on:checked={onSelectAll}
-                        folderName={fileDesc.name}
-                        {fileGrouping}
-                        {notSelectable}
-                        {fileDesc}
                         {selectionCount}
+                        {selectedFiles}
                 >
-                    <slot name="selection-actions"/>
+                    <slot name="selection-actions" data={selectedFiles}/>
                 </SelectionBar>
             {:else}
                 <MenuBar
