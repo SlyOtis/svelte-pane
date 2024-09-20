@@ -40,7 +40,7 @@
                     }
                 }}
         >
-            <div slot="item-actions">
+            <div slot="item-actions" class="actions">
                 <button><span class="material-symbols-outlined">delete</span></button>
             </div>
             <div slot="item-loading">
@@ -77,5 +77,25 @@
         border: 1px solid gray;
         border-radius: 12px;
         overflow: hidden;
+    }
+
+    .actions {
+        position: relative;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        width: 100%;
+    }
+
+    .actions > button {
+        position: relative;
+        cursor: pointer;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #242424;
+        padding: 4px;
     }
 </style>

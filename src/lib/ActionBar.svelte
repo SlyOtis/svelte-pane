@@ -52,10 +52,12 @@
 
     ul,
     li {
+        position: relative;
         list-style: none;
         padding: 0;
         margin: 0;
         color: var(--color-on-secondary);
+        width: auto;
     }
 
     button {

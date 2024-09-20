@@ -1,17 +1,17 @@
 import type {ComponentType} from 'svelte';
 import type {Readable} from "svelte/store";
 
-export type FileMetadata = {
+export type FileMetadata<T extends string | number | Date | boolean> = {
     name: string
     value: string | number | Date | boolean
     hidden?: boolean
-    displayValue: DisplayValueTransformer
+    displayValue: DisplayValueTransformer<T>
 };
 
-export type KeyFileMetadata = FileMetadata & { key: string }
+export type KeyFileMetadata<T extends string | number | Date | boolean> = FileMetadata<T> & { key: string }
 
 export type FileMetadataDescriptor = {
-    [key: string]: FileMetadata;
+    [key: string]: FileMetadata<any>;
 }
 
 export type FileDescriptor = {

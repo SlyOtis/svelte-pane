@@ -1,5 +1,4 @@
 <script lang="ts">
-    import "./index.css"
     import "./fileTreeItem.css"
     import type {
         FileDescriptor,
@@ -136,7 +135,7 @@
 
     $: icon = getIcon(isExpanded, fileDesc);
 
-    let fileMetadata: Array<KeyFileMetadata>
+    let fileMetadata: Array<KeyFileMetadata<any>>
     $: {
         fileMetadata = []
         if (fileDesc.metadata) {
@@ -165,18 +164,20 @@
             <span class="material-symbols-outlined">{icon}</span>
             <span>{fileDesc.name}</span>
         </button>
-        {#if fileMetadata.length}
-            <ul class="metadata">
+        <ul class="metadata">
+            {#if fileMetadata.length}
                 {#each fileMetadata as metadata}
                     <li class="metadata-{metadata.key}">
                         <span class="name">{metadata.name}</span>
                         <span class="value">{metadata.displayValue(metadata.value)}</span>
                     </li>
                 {/each}
-            </ul>
-        {/if}
+            {/if}
+        </ul>
         <div class="end" class:actions-transition={!noActionsTransition}>
-            <slot name="item-actions" data={fileDesc}></slot>
+            <div class="item-actions">
+                <slot name="item-actions" data={fileDesc}></slot>
+            </div>
         </div>
     </li>
     {#if fileDesc.children && isExpanded}
@@ -219,104 +220,5 @@
     * {
         box-sizing: border-box;
         border-collapse: collapse;
-    }
-
-    ul,
-    li {
-        position: relative;
-        list-style: none;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        color: var(--sly-color-on-content);
-        background: var(--sly-color-content);
-    }
-
-
-    .tree-item {
-        position: relative;
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        width: 100%;
-        height: auto;
-        padding: 8px 16px;
-        overflow: hidden;
-        box-sizing: border-box;
-        border-bottom: 1px solid var(--sly-color-control);
-    }
-
-    .tree-item:hover {
-        color: var(--sly-color-on-hover);
-        background-color: var(--sly-color-hover);
-    }
-
-    .tree-item:hover > .actions-transition {
-        max-width: 1000px;
-    }
-
-    .tree-item > .name {
-        position: relative;
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        width: auto;
-        gap: 8px;
-    }
-
-    .tree-item > .start, .tree-item > .end {
-        position: relative;
-        display: flex;
-        justify-content: start;
-        align-items: center;
-    }
-
-    .tree-item > .metadata {
-        position: relative;
-        display: flex;
-        justify-content: end;
-        align-items: center;
-        padding: 0 16px;
-        overflow-y: hidden;
-        gap: 4px;
-        overflow-x: auto;
-        width: 100%;
-    }
-
-    .metadata > li {
-        position: relative;
-        width: auto;
-        border: 8px;
-        background: var(--sly-color-metadata);
-        color: var(--sly-color-on-metadata);
-        padding: 2px 6px;
-        border-radius: 12px;
-        font-size: 0.7em;
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        vertical-align: middle;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        max-width: 100%;
-    }
-
-    .metadata > li > .name {
-        font-weight: 600;
-        padding-right: 4px;
-    }
-
-    button {
-        background: none;
-        color: inherit;
-        outline: none;
-        border: none;
-        cursor: pointer;
-    }
-
-    .last-item {
-        border-bottom: 1px solid var(--sly-color-control);
     }
 </style>
