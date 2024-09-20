@@ -36,7 +36,6 @@ export type DisplayValueTransformer<T extends string | number | boolean | Date> 
 
 export type FileGroup = {
     name: string,
-    icon?: string,
     orderOf: 'date' | 'number' | 'string' | 'boolean',
     displayValue?: DisplayValueTransformer<any>,
 }

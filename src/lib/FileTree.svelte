@@ -5,7 +5,10 @@
         LastItem,
         SelectedFile,
         SelectedFiles,
-        FileTreeContext, ExpandedFolders, ExpandedFolder, FileGrouping, FileGroup, SortGroup, DisplayValueTransformer,
+        FileTreeContext,
+        FileGrouping,
+        SortGroup,
+        DisplayValueTransformer,
     } from "./types";
     import FileTreeItem from "./FileTreeItem.svelte";
     import {createEventDispatcher, setContext} from "svelte";
@@ -13,7 +16,7 @@
     import {writable} from "svelte/store";
     import SelectionBar from "./SelectionBar.svelte";
     import MenuBar from "./ActionBar.svelte";
-    import {orderItems} from "./utils";
+    import {orderItems, reduceSelectedItems} from "./utils";
     import SizeWatcher from "./SizeWatcher.svelte";
 
     export let fileDesc: FileDescriptor;
@@ -81,6 +84,16 @@
         return fileGrouping?.[metadataKey]?.displayValue
     }
 
+    function onSelectAll(e: CustomEvent<boolean>) {
+        fileDesc.selected = e.detail;
+        const items = reduceSelectedItems(fileDesc);
+        if (fileDesc.selected) {
+            selectItems(...items);
+        } else {
+            deselectItems(...items);
+        }
+    }
+
     setContext<FileTreeContext>("file-tree-context", {
         selectItems,
         deselectItems,
@@ -92,7 +105,7 @@
         expandedItems
     });
 
-    $: selectedFilesCount = Object.keys(selectedFiles).length;
+    $: selectionCount = Object.keys(selectedFiles).length;
     $: displayKeys = fileGrouping ? Object.keys(fileGrouping) : []
 </script>
 
@@ -103,16 +116,22 @@
 <div class="root">
     {#if !noMenuBar}
         <div class="header">
-            {#if !notSelectable && selectedFilesCount > 0}
-                <SelectionBar>
+            {#if !notSelectable && selectionCount > 0}
+                <SelectionBar
+                        on:checked={onSelectAll}
+                        folderName={fileDesc.name}
+                        {fileGrouping}
+                        {notSelectable}
+                        {fileDesc}
+                        {selectionCount}
+                >
                     <slot name="selection-actions"/>
                 </SelectionBar>
             {:else}
                 <MenuBar
-                        on:checked={(e) => fileDesc.selected = e.detail}
+                        on:checked={onSelectAll}
                         folderName={fileDesc.name}
                         {fileGrouping}
-                        {noActionsTransition}
                         {notSelectable}
                         {fileDesc}
                 />
