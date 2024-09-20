@@ -3,10 +3,7 @@
     import type {
         FileDescriptor,
         LastItem,
-        SelectedFile,
-        SelectedFiles,
         FileTreeContext,
-        FileMetadata,
         KeyFileMetadata,
     } from "./types";
     import {createEventDispatcher, getContext} from "svelte";
@@ -23,6 +20,7 @@
     export let noIndentation = false;
     export let displayKeys: Array<string> = []
     export let noActionsTransition = false
+    export let metadataAsTags = false
 
     const dispatch = createEventDispatcher();
 
@@ -139,16 +137,24 @@
         </div>
         <button on:click={onItemClick} class="name">
             <span class="material-symbols-outlined">{icon}</span>
-            <span>{fileDesc.name}</span>
+            <span class="text">{fileDesc.name}</span>
         </button>
         <ul class="metadata">
             {#if fileMetadata.length}
-                {#each fileMetadata as metadata}
-                    <li class="metadata-{metadata.key}">
-                        <span class="name">{metadata.name}</span>
-                        <span class="value">{metadata.displayValue(metadata.value)}</span>
-                    </li>
-                {/each}
+                {#if metadataAsTags}
+                    {#each fileMetadata as metadata}
+                        <li class="metadata-{metadata.key} tag">
+                            <span class="name">{metadata.name}</span>
+                            <span class="value">{metadata.displayValue(metadata.value)}</span>
+                        </li>
+                    {/each}
+                {:else}
+                    {#each fileMetadata as metadata}
+                        <li class="metadata-{metadata.key} grid">
+                            <span class="value">{metadata.displayValue(metadata.value)}</span>
+                        </li>
+                    {/each}
+                {/if}
             {/if}
         </ul>
         <div class="end" class:actions-transition={!noActionsTransition}>
