@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "./index.css"
+    import "./fileTree.css"
     import type {
         FileDescriptor,
         LastItem,
@@ -14,6 +14,7 @@
     import SelectionBar from "./SelectionBar.svelte";
     import MenuBar from "./ActionBar.svelte";
     import {orderItems} from "./utils";
+    import SizeWatcher from "./SizeWatcher.svelte";
 
     export let fileDesc: FileDescriptor;
     export let selectedFiles: SelectedFiles = {};
@@ -72,7 +73,7 @@
         sortGroup.set(group)
     }
 
-    function getValueTransformer(metadataKey: string): DisplayValueTransformer | undefined {
+    function getValueTransformer(metadataKey: string): DisplayValueTransformer<any> | undefined {
         if (!fileGrouping) {
             return undefined
         }
@@ -94,6 +95,10 @@
     $: selectedFilesCount = Object.keys(selectedFiles).length;
     $: displayKeys = fileGrouping ? Object.keys(fileGrouping) : []
 </script>
+
+<SizeWatcher>
+    <slot name="item-actions" data={fileDesc}></slot>
+</SizeWatcher>
 
 <div class="root">
     {#if !noMenuBar}
@@ -155,91 +160,3 @@
         {/if}
     </div>
 </div>
-
-<style>
-    * {
-        box-sizing: border-box;
-    }
-
-    :root {
-        --sly-color-control: gray;
-        --sly-color-content: transparent;
-        --sly-color-no-content: gray;
-        --sly-color-hover: gray;
-        --sly-color-select: gray;
-        --sly-color-on-content: white;
-        --sly-color-on-hover: white;
-        --sly-color-on-select: white;
-        --sly-color-metadata: rgba(75, 218, 237, 0.6);
-        --sly-color-on-metadata: white;
-        --sly-color-header: transparent;
-        --sly-item-indentation: 16px;
-    }
-
-    .root {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: start;
-        align-items: start;
-        flex-direction: column;
-    }
-
-    .header {
-        position: relative;
-        width: 100%;
-        height: auto;
-        padding: 8px 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-direction: row;
-        background: var(--sly-color-header);
-        border-bottom: 1px solid var(--sly-color-control);
-    }
-
-    ul,
-    li {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        color: var(--color-on-secondary);
-    }
-
-    .inner {
-        position: relative;
-        display: flex;
-        justify-content: start;
-        align-items: start;
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .files {
-        position: relative;
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        width: 100%;
-        height: auto;
-    }
-
-    .files > ul,
-    .files > ul > li {
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
-
-    .last-item {
-        position: relative;
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        width: 100%;
-        height: auto;
-    }
-</style>

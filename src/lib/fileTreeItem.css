@@ -1,22 +1,126 @@
-.actions-transition {
+@import "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200";
+
+:root {
+    --sly-tree-item-end-size: 0px;
+    --sly-tree-item-actions-size: 0fr;
+}
+
+ul,
+li {
     position: relative;
-    will-change: max-width;
+    list-style: none;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    color: var(--sly-color-on-content);
+    background: var(--sly-color-content);
+}
+
+.tree-item {
+    position: relative;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: min-content max-content 1fr 0;
+    width: 100%;
+    height: auto;
+    gap: 8px;
+    padding: 6px 12px;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--sly-color-control);
+    transition: 250ms 0ms ease-out all;
+}
+
+.tree-item:hover {
+    color: var(--sly-color-on-hover);
+    background-color: var(--sly-color-hover);
+}
+
+.tree-item:has(>.actions-transition) {
+    transition: 250ms 0ms ease-out all;
+    grid-template-columns: min-content max-content minmax(0, 1fr) var(--sly-tree-item-end-size);
+}
+
+.tree-item:hover:has(>.actions-transition) {
+    --sly-tree-item-end-size: var(--sly-tree-item-actions-size);
+}
+
+.tree-item:not(:has(> .actions-transition)) {
+    grid-template-columns: min-content max-content 1fr max-content;
+}
+
+.tree-item > .name {
+    position: relative;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: auto;
+    gap: 8px;
+    background: none;
+    color: inherit;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.tree-item > .start, .tree-item > .end {
+    position: relative;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.tree-item > .metadata {
+    position: relative;
     display: flex;
     justify-content: end;
     align-items: center;
-    transition: 250ms 0ms ease-out max-width;
-    max-width: 0;
-    overflow: hidden;
-    width: max-content;
-    box-sizing: border-box;
-    flex-shrink: 1;
+    overflow-y: hidden;
+    gap: 4px;
+    overflow-x: auto;
+    width: 100%;
 }
 
-.actions-transition > * {
+.metadata > li {
     position: relative;
+    width: auto;
+    height: min-content;
+    border: 8px;
+    background: var(--sly-color-metadata);
+    color: var(--sly-color-on-metadata);
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 0.7em;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    vertical-align: middle;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.metadata > li > .name {
+    font-weight: 600;
+    padding-right: 4px;
+}
+
+.last-item {
+    border-bottom: 1px solid var(--sly-color-control);
+}
+
+.actions-transition {
+    position: relative;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    overflow: hidden;
     box-sizing: border-box;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 100%;
 }
