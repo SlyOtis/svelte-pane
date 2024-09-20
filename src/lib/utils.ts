@@ -1,4 +1,4 @@
-import type {FileDescriptor, SortGroup} from "./types";
+import type {FileDescriptor, SelectedFile, SortGroup} from "./types";
 import * as string_decoder from "node:string_decoder";
 
 function css(strings: TemplateStringsArray, ...values: any[]): string {
@@ -192,10 +192,34 @@ function displayDateISO(value: Date): string {
     }).format(value).replace(/\//g, '.');
 }
 
+function reduceSelectedItems(start: FileDescriptor): Array<SelectedFile> {
+    const _items: Array<SelectedFile> = [
+        {
+            id: start.id,
+            name: start.name,
+            metadata: start.metadata,
+            mimeType: start.mimeType,
+            path: start.path,
+            href: start.href,
+        },
+    ];
+
+    if (!start?.children?.length) {
+        return _items;
+    }
+
+    for (const item of start.children) {
+        _items.push(...reduceSelectedItems(item));
+    }
+
+    return _items;
+}
+
 export {
     css,
     setOnEscListener,
     waitForStylesheet,
     orderItems,
     displayDateISO,
+    reduceSelectedItems
 }

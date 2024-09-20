@@ -108,7 +108,14 @@
                     <slot name="selection-actions"/>
                 </SelectionBar>
             {:else}
-                <MenuBar folderName={fileDesc.name} {fileGrouping}/>
+                <MenuBar
+                        on:checked={(e) => fileDesc.selected = e.detail}
+                        folderName={fileDesc.name}
+                        {fileGrouping}
+                        {noActionsTransition}
+                        {notSelectable}
+                        {fileDesc}
+                />
             {/if}
         </div>
     {/if}
@@ -117,7 +124,7 @@
             {#key `${fileDesc.id}#${fileDesc.selected}`}
                 <div class="files">
                     <ul>
-                        {#each orderItems(fileDesc.children, $sortGroup)  as child}
+                        {#each orderItems(fileDesc.children, $sortGroup) as child}
                             {@const childDesc = {
                                 ...child,
                                 selected: fileDesc.selected,

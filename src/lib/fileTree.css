@@ -33,7 +33,7 @@
     position: relative;
     width: 100%;
     height: auto;
-    padding: 8px 16px;
+    padding: 6px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,7 +47,7 @@ li {
     list-style: none;
     padding: 0;
     margin: 0;
-    color: var(--color-on-secondary);
+    color: var(--sly-color-on-content);
 }
 
 .inner {
