@@ -11,7 +11,7 @@
     } from "./types";
     import {createEventDispatcher, getContext} from "svelte";
     import Checkbox from "./Checkbox.svelte";
-    import {css, orderItems} from "./utils";
+    import {css, orderItems, reduceSelectedItems} from "./utils";
     import {getHighlightContext} from "./index";
     import ItemRenderer from "./ItemRenderer.svelte";
 
@@ -83,35 +83,12 @@
         fileDesc.selected = e.detail;
         dispatch("selected", fileDesc);
 
-        const items = reduceItem(fileDesc);
+        const items = reduceSelectedItems(fileDesc);
         if (fileDesc.selected) {
             selectItems(...items);
         } else {
             deselectItems(...items);
         }
-    }
-
-    function reduceItem(start: FileDescriptor): Array<SelectedFile> {
-        const _items: Array<SelectedFile> = [
-            {
-                id: start.id,
-                name: start.name,
-                metadata: start.metadata,
-                mimeType: start.mimeType,
-                path: start.path,
-                href: start.href,
-            },
-        ];
-
-        if (!start?.children?.length) {
-            return _items;
-        }
-
-        for (const item of start.children) {
-            _items.push(...reduceItem(item));
-        }
-
-        return _items;
     }
 
     const highlightContext = getHighlightContext();
