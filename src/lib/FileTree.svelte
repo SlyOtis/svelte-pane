@@ -29,6 +29,7 @@
     export let noFolderClick = false;
     export let noIndentation = false
     export let noActionsTransition = false
+    export let metadataAsTags = false
 
     const expandedItems = writable<Array<string>>([])
     const sortGroup = writable<SortGroup | undefined>(undefined)
@@ -157,6 +158,7 @@
                                             {noIndentation}
                                             {displayKeys}
                                             {noActionsTransition}
+                                            {metadataAsTags}
                                     >
                                         <slot name="item-loading" slot="item-loading" data={fileDesc}></slot>
                                         <slot name="item-actions" slot="item-actions" data={fileDesc}></slot>

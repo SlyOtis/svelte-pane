@@ -67,6 +67,10 @@ li {
     cursor: pointer;
 }
 
+.tree-item > .name:hover > .text {
+    text-decoration: underline;
+}
+
 .tree-item > .start, .tree-item > .end {
     position: relative;
     display: flex;
@@ -80,20 +84,18 @@ li {
     justify-content: end;
     align-items: center;
     overflow-y: hidden;
-    gap: 4px;
     overflow-x: auto;
     width: 100%;
+}
+
+.tree-item > .metadata:has(>.tag) {
+    gap: 4px;
 }
 
 .metadata > li {
     position: relative;
     width: auto;
     height: min-content;
-    border: 8px;
-    background: var(--sly-color-metadata);
-    color: var(--sly-color-on-metadata);
-    padding: 2px 6px;
-    border-radius: 12px;
     font-size: 0.7em;
     display: flex;
     justify-content: start;
@@ -105,7 +107,28 @@ li {
     max-width: 100%;
 }
 
-.metadata > li > .name {
+.metadata > .tag {
+    position: relative;
+    width: auto;
+    height: min-content;
+    background: var(--sly-color-metadata);
+    color: var(--sly-color-on-metadata);
+    padding: 2px 6px;
+    border-radius: 12px;
+}
+
+.metadata > .grid {
+    position: relative;
+    width: auto;
+    height: min-content;
+    padding: 2px 6px;
+}
+
+.metadata > .grid:not(:last-of-type) {
+    border-right: 1px solid var(--sly-color-control);
+}
+
+.metadata > .tag > .name {
     font-weight: 600;
     padding-right: 4px;
 }
