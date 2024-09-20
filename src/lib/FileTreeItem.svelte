@@ -11,6 +11,7 @@
     import {css, orderItems, reduceSelectedItems} from "./utils";
     import {getHighlightContext} from "./index";
     import ItemRenderer from "./ItemRenderer.svelte";
+    import CellValue from "./CellValue.svelte";
 
     export let fileDesc: FileDescriptor;
     export let depth = 0;
@@ -150,9 +151,7 @@
                     {/each}
                 {:else}
                     {#each fileMetadata as metadata}
-                        <li class="metadata-{metadata.key} grid">
-                            <span class="value">{metadata.displayValue(metadata.value)}</span>
-                        </li>
+                        <CellValue key={metadata.key} value={metadata.displayValue(metadata.value)}/>
                     {/each}
                 {/if}
             {/if}
@@ -187,9 +186,7 @@
             {/key}
         {/each}
         {#if lastItem && fileDesc.mimeType === "folder"}
-            <li
-                    class="last-item"
-            >
+            <li class="last-item">
                 <ItemRenderer {fileDesc} item={lastItem} depth={depth}>
                     <slot name="item-loading" slot="loading" data={fileDesc}></slot>
                     <slot name="item-no-content" slot="no-content" data={fileDesc}></slot>
