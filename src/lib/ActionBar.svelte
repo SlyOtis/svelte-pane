@@ -5,9 +5,9 @@
 
     export let folderName: string
     export let fileGrouping: FileGrouping | undefined = undefined
-    export let noActionsTransition = false
     export let notSelectable = false;
     export let fileDesc: FileDescriptor;
+    export let noActionsTransition = false
 
     const {sortItems, sortGroup} = getContext<FileTreeContext>("file-tree-context");
 
@@ -20,7 +20,7 @@
     }
 </script>
 
-<div class="root" class:selectable={!notSelectable}>
+<div class="root" class:selectable={!notSelectable} class:no-action-transition={noActionsTransition}>
     {#if !notSelectable}
         <Checkbox checked={fileDesc.selected} on:checked/>
     {/if}
@@ -38,21 +38,20 @@
                             orderOf: group.orderOf
                         }, $sortGroup)}
                     >
-                        {#if $sortGroup?.key === groupKey}
-                            {#if $sortGroup?.order === 'asc'}
-                                <span class="material-symbols-outlined">arrow_drop_down</span>
-                            {:else }
-                                <span class="material-symbols-outlined">arrow_drop_up</span>
-                            {/if}
+                        {#if $sortGroup?.order === 'asc'}
+                            <span class="material-symbols-outlined">arrow_drop_down</span>
+                        {:else }
+                            <span class="material-symbols-outlined">arrow_drop_up</span>
                         {/if}
-                        <span class="material-symbols-outlined">{group.icon || 'tag'}</span>
                         <span class="text">{group.name}</span>
                     </button>
                 </li>
             {/each}
         </ul>
     {/if}
-    <div></div>
+    {#if noActionsTransition}
+        <div class="transition-placeholder"></div>
+    {/if}
 </div>
 
 <style>
@@ -63,11 +62,15 @@
     .root {
         position: relative;
         display: grid;
-        grid-template-columns: min-content max-content minmax(0, 1fr) var(--sly-tree-item-actions-size);
+        grid-template-columns: min-content max-content minmax(0, 1fr);
     }
 
     .root.selectable {
         gap: 8px;
+    }
+
+    .root.no-action-transition {
+        grid-template-columns: min-content max-content minmax(0, 1fr) var(--sly-tree-item-actions-size);
     }
 
     ul,
@@ -76,7 +79,7 @@
         list-style: none;
         padding: 0;
         margin: 0;
-        color: var(--color-on-secondary);
+        color: var(--sly-color-on-content);
         width: auto;
     }
 
@@ -98,24 +101,43 @@
     }
 
     ul {
-        display: flex;
-        justify-content: center;
+        display: grid;
+        justify-content: end;
         align-items: center;
-        flex-direction: row;
-        gap: 16px;
+        justify-items: center;
+        align-content: center;
+        grid-template-columns: repeat(auto-fit, minmax(0, auto));
+        grid-template-rows: 1fr;
+        width: 100%;
+    }
+
+    li {
+        padding: 0 4px;
+    }
+
+    li:not(:last-child) {
+        border-right: 1px solid var(--sly-color-control);
     }
 
     button > .text {
         font-size: 1em;
-        padding: 8px;
+        user-select: none;
+    }
+
+    button > .material-symbols-outlined {
+        opacity: 0.5;
     }
 
     button:hover {
         cursor: pointer;
-        color: var(--color-primary);
+        color: var(--sly-color-on-hover);
     }
 
-    .active {
-        background: var(--sly-color-select);
+    .active > .text {
+        font-weight: 600;
+    }
+
+    .active > .material-symbols-outlined {
+        opacity: 1;
     }
 </style>

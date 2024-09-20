@@ -43,6 +43,9 @@
             <div slot="item-actions" class="actions">
                 <button><span class="material-symbols-outlined">delete</span></button>
             </div>
+            <div slot="selection-actions" class="actions">
+                <button><span class="material-symbols-outlined">delete</span></button>
+            </div>
             <div slot="item-loading">
                 <span>Loading...</span>
             </div>
