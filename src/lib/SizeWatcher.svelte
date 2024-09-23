@@ -67,8 +67,6 @@
             resizeObserver.observe(parentElement);
         }
     }
-
-    $: console.log(width)
 </script>
 
 <div class="size-watcher" bind:this={slotElement}>

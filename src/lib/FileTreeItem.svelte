@@ -11,7 +11,7 @@
     import {css, orderItems, reduceSelectedItems} from "./utils";
     import {getHighlightContext} from "./index";
     import ItemRenderer from "./ItemRenderer.svelte";
-    import {metadataSizeDynamic} from "./useMetadataSize";
+    import {metadataSizeData} from "./useMetadataSize";
 
     export let fileDesc: FileDescriptor;
     export let depth = 0;
@@ -140,7 +140,7 @@
             <span class="material-symbols-outlined">{icon}</span>
             <span class="text">{fileDesc.name}</span>
         </button>
-        <ul class="metadata">
+        <ul class="metadata" use:metadataSizeData>
             {#if fileMetadata.length}
                 {#if metadataAsTags}
                     {#each fileMetadata as metadata}
@@ -151,7 +151,7 @@
                     {/each}
                 {:else}
                     {#each fileMetadata as metadata}
-                        <li class="metadata-{metadata.key} grid" use:metadataSizeDynamic="{metadata.key}">
+                        <li class="metadata-{metadata.key} grid" data-key={metadata.key}>
                             <span class="value">{metadata.displayValue(metadata.value)}</span>
                         </li>
                     {/each}

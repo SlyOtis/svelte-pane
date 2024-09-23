@@ -18,7 +18,7 @@
     --sly-color-header: transparent;
     --sly-item-indentation: 12px;
     --sly-item-cell-gap: 8px;
-    --sly-tree-metadata-columns: repeat(auto-fill, minmax(0, min-content));
+    --sly-tree-metadata-columns: repeat(auto-fill, minmax(0, auto));
     --scrollbar-width: 8px;
 }
 
@@ -87,4 +87,8 @@ li {
     align-items: center;
     width: 100%;
     height: auto;
+}
+
+.sly-file-tree [data-grid="true"] {
+    grid-template-columns: var(--sly-tree-metadata-columns) !important;
 }

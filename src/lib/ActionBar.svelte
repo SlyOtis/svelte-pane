@@ -2,7 +2,7 @@
     import type {FileDescriptor, FileGrouping, FileTreeContext, SortGroup} from "./types";
     import {getContext} from "svelte";
     import Checkbox from "./Checkbox.svelte";
-    import {metadataSizeDynamic} from "./useMetadataSize";
+    import {metadataSizeData} from "./useMetadataSize";
 
     export let folderName: string
     export let fileGrouping: FileGrouping | undefined = undefined
@@ -27,10 +27,10 @@
     {/if}
     <span><b>{folderName}</b></span>
     {#if fileGrouping}
-        <ul>
+        <ul use:metadataSizeData>
             {#each Object.keys(fileGrouping) as groupKey}
                 {@const group = fileGrouping[groupKey]}
-                <li use:metadataSizeDynamic={groupKey}>
+                <li data-key={groupKey}>
                     <button
                             class:active={$sortGroup?.key === groupKey}
                             on:click|preventDefault|stopPropagation={() => toggleSortGroup({
@@ -44,7 +44,10 @@
                         {:else }
                             <span class="material-symbols-outlined">arrow_drop_up</span>
                         {/if}
-                        <span class="text">{group.name}</span>
+                        <div class="text">
+                            <span class="name">{group.name}</span>
+                            <span class="placeholder">{group.name}</span>
+                        </div>
                     </button>
                 </li>
             {/each}
@@ -128,6 +131,21 @@
     button > .text {
         font-size: 1em;
         user-select: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 0;
+    }
+
+    .text > .placeholder {
+        opacity: 0;
+        font-weight: 600;
+        z-index: 0;
+    }
+
+    .text > .name {
+        position: absolute;
+        z-index: 1;
     }
 
     button > .material-symbols-outlined {
@@ -139,7 +157,7 @@
         color: var(--sly-color-on-hover);
     }
 
-    .active > .text {
+    .active > .text > .name {
         font-weight: 600;
     }
 

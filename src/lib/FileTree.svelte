@@ -11,7 +11,7 @@
         DisplayValueTransformer,
     } from "./types";
     import FileTreeItem from "./FileTreeItem.svelte";
-    import {createEventDispatcher, setContext} from "svelte";
+    import {createEventDispatcher, onMount, setContext} from "svelte";
     import ItemRenderer from "./ItemRenderer.svelte";
     import {writable} from "svelte/store";
     import SelectionBar from "./SelectionBar.svelte";
@@ -19,6 +19,7 @@
     import {orderItems, reduceSelectedItems} from "./utils";
     import SizeWatcher from "./SizeWatcher.svelte";
     import scrollMeasure from "./useScrollMeasure";
+    import {metadataGrid} from "./useMetadataSize";
 
     export let fileDesc: FileDescriptor;
     export let selectedFiles: SelectedFiles = {};
@@ -114,7 +115,7 @@
     <slot name="item-actions" data={fileDesc}></slot>
 </SizeWatcher>
 
-<div class="sly-file-tree" use:scrollMeasure={".inner > .files"}>
+<div class="sly-file-tree" use:scrollMeasure={".inner > .files"} use:metadataGrid>
     {#if !noMenuBar}
         <div class="header">
             {#if !notSelectable && selectionCount > 0}

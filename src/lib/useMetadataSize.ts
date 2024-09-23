@@ -1,21 +1,19 @@
-class GridCells {
+class SlyGrid {
     static cells: { [key: string]: { count: number, width: number } } = {};
 }
 
 function updateSize(node: HTMLElement, key: string) {
-    const cellData = GridCells.cells?.[key] || {width: 0, count: 0};
-    const currWidth = Math.ceil(parseFloat(window.getComputedStyle(node).width))
+    const cellData = SlyGrid.cells?.[key] || {width: 0, count: 0};
+    const currWidth = Math.ceil(node.offsetWidth)
     if (currWidth > cellData.width) {
-        GridCells.cells[key] = {width: currWidth, count: cellData.count + 1};
+        SlyGrid.cells[key] = {width: currWidth, count: cellData.count + 1};
         const fileTree = node.closest<HTMLElement>('.sly-file-tree')!!
         fileTree.style.setProperty(`--sly-tree-cell-${key}-size`, currWidth + "px")
-        fileTree.style.setProperty('--sly-tree-metadata-columns', Object.keys(GridCells.cells).reduce((prev, curr) => {
-            return `${prev} minmax(${GridCells.cells[curr].width}px, auto)`
+        fileTree.style.setProperty('--sly-tree-metadata-columns-calc', Object.keys(SlyGrid.cells).reduce((prev, curr) => {
+            return `${prev} minmax(auto, ${SlyGrid.cells[curr].width}px)`
         }, ''))
-
-        console.log(node.innerHTML, currWidth)
     } else {
-        GridCells.cells[key] = {...cellData, count: cellData.count + 1};
+        SlyGrid.cells[key] = {...cellData, count: cellData.count + 1};
     }
 }
 
@@ -28,12 +26,12 @@ export function metadataSizeDynamic(node: HTMLElement, key: string) {
 
     return {
         destroy() {
-            const count = (GridCells.cells?.[key]?.count || 0) - 1;
+            const count = (SlyGrid.cells?.[key]?.count || 0) - 1;
             if (count <= 0) {
-                delete GridCells.cells[key]
+                delete SlyGrid.cells[key]
             }
         },
-        update(key: string){
+        update(key: string) {
             requestAnimationFrame(() => {
                 updateSize(node, key)
             })
@@ -46,9 +44,52 @@ export function metadataSizeStatic(node: HTMLElement, key: string) {
     node.parentElement?.style.setProperty('grid-template-columns', 'var(--sly-tree-metadata-columns)')
 
     return {
-        destroy() {},
-        update(key: string){
+        destroy() {
+        },
+        update(key: string) {
             updateSize(node, key)
         }
+    };
+}
+
+export function metadataSizeData(node: HTMLElement) {
+    function update() {
+        console.log("measuring")
+        const cells = node.querySelectorAll<HTMLElement>('[data-key]')
+        cells.forEach(cell => updateSize(cell, cell.dataset["key"]!!))
+        node.style.setProperty('grid-template-columns', 'var(--sly-tree-metadata-columns)')
+    }
+
+    update()
+
+    return {
+        destroy() {
+            node.querySelectorAll<HTMLElement>('[data-key]').forEach(cell => {
+                const key = cell.dataset["key"]!!
+                const count = (SlyGrid.cells?.[key]?.count || 0) - 1;
+                if (count <= 0) {
+                    delete SlyGrid.cells[key]
+                }
+            });
+        },
+        update
+    };
+}
+
+export function metadataGrid(node: HTMLElement) {
+    function update() {
+        node.style.setProperty('--sly-tree-metadata-columns', 'repeat(auto-fill, minmax(0, auto))')
+        requestAnimationFrame(() => {
+            node.style.setProperty('--sly-tree-metadata-columns', 'var(--sly-tree-metadata-columns-calc)')
+        })
+    }
+
+    update()
+
+    return {
+        destroy() {
+            node.style.setProperty('--sly-tree-metadata-columns', 'repeat(auto-fill, minmax(0, auto))')
+        },
+        update
     };
 }
