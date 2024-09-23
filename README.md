@@ -1,6 +1,6 @@
 # Sly Svelte File Tree
 
-A customizable file tree view component for Svelte applications.
+A customizable file tree view component for Svelte.
 
 ## Features
 

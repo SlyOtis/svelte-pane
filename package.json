@@ -1,16 +1,20 @@
 {
   "name": "sly-svelte-file-tree",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
-  "description": "Create resizeable grid and popout panels for svelte",
+  "description": "A customizable file tree view component for Svelte",
   "keywords": [
     "svelte",
-    "router",
-    "location api",
     "slyotis",
     "sly",
-    "location"
+    "file-tree",
+    "tree-view",
+    "file",
+    "tree",
+    "folder-tree",
+    "folder-view",
+    "file-select"
   ],
   "repository": {
     "type": "git",
