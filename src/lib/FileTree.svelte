@@ -11,7 +11,7 @@
         DisplayValueTransformer,
     } from "./types";
     import FileTreeItem from "./FileTreeItem.svelte";
-    import {createEventDispatcher, setContext} from "svelte";
+    import {setContext} from "svelte";
     import ItemRenderer from "./ItemRenderer.svelte";
     import {writable} from "svelte/store";
     import SelectionBar from "./SelectionBar.svelte";
@@ -36,22 +36,6 @@
 
     const expandedItems = writable<Array<string>>([])
     const sortGroup = writable<SortGroup | undefined>(undefined)
-
-    const dispatch = createEventDispatcher();
-
-    function onDeselect() {
-        selectedFiles = {};
-        fileDesc.selected = false;
-    }
-
-    function onDelete() {
-    }
-
-    function onTag() {
-    }
-
-    function onArchive() {
-    }
 
     function onFontsLoaded(e: any) {
         console.log(e)
