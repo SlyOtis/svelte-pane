@@ -37,10 +37,8 @@
     const expandedItems = writable<Array<string>>([])
     const sortGroup = writable<SortGroup | undefined>(undefined)
 
-    function onFontsLoaded(e: any) {
-        console.log(e)
+    function onFontsLoaded() {
         document.fonts.ready.then(() => {
-            console.log('ready')
             isFontsLoaded = true
         })
     }
