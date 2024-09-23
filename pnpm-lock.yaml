@@ -24,6 +24,9 @@ importers:
       '@types/node':
         specifier: ^22.5.4
         version: 22.5.4
+      '@types/uuid':
+        specifier: ^10.0.0
+        version: 10.0.0
       svelte:
         specifier: ^4.0.0
         version: 4.2.19
@@ -382,6 +385,9 @@ packages:
 
   '@types/pug@2.0.10':
     resolution: {integrity: sha512-Sk/uYFOBAB7mb74XcpizmH0KOR2Pv3D2Hmrh1Dmy5BmK3MpdSa5kqZcg6EKBdklU0bFXX9gCfzvpnyUehrPIuA==}
+
+  '@types/uuid@10.0.0':
+    resolution: {integrity: sha512-7gqG38EyHgyP1S+7+xomFtL+ZNHcKv6DwNaCZmJmo1vgMugyF3TCnXVg4t1uk89mLNwnLtnY3TpOpCOyp1/xHQ==}
 
   '@volar/language-core@2.4.4':
     resolution: {integrity: sha512-kO9k4kTLfxpg+6lq7/KAIv3m2d62IHuCL6GbVgYZTpfKvIGoAIlDxK7pFcB/eczN2+ydg/vnyaeZ6SGyZrJw2w==}
@@ -1247,6 +1253,8 @@ snapshots:
       undici-types: 6.19.8
 
   '@types/pug@2.0.10': {}
+
+  '@types/uuid@10.0.0': {}
 
   '@volar/language-core@2.4.4':
     dependencies:

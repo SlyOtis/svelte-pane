@@ -13,7 +13,7 @@ export type FileMetadata<T extends string | number | Date | boolean> = {
     /** Whether the metadata should be hidden */
     hidden?: boolean;
     /** A function to transform the display value of the metadata */
-    displayValue: DisplayValueTransformer<T>;
+    displayValue?: DisplayValueTransformer<T>;
 };
 
 /**
@@ -23,6 +23,8 @@ export type FileMetadata<T extends string | number | Date | boolean> = {
 export type KeyFileMetadata<T extends string | number | Date | boolean> = FileMetadata<T> & {
     /** The key of the metadata field */
     key: string
+    /** A function to transform the display value of the metadata */
+    displayValue: DisplayValueTransformer<T>;
 };
 
 /**

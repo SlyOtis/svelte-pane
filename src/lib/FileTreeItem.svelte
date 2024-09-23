@@ -121,7 +121,7 @@
                     if (!data.displayValue) {
                         data.displayValue = getValueTransformer(key) || ((value: any) => value)
                     }
-                    fileMetadata.push({...data, key})
+                    fileMetadata.push({...data, key} as any)
                 }
             })
         }

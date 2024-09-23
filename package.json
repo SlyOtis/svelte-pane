@@ -49,6 +49,7 @@
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@tsconfig/svelte": "^5.0.4",
     "@types/node": "^22.5.4",
+    "@types/uuid": "^10.0.0",
     "svelte": "^4.0.0",
     "svelte-check": "^3.8.5",
     "tslib": "^2.6.3",
