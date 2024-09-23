@@ -208,6 +208,6 @@
     </div>
 {:else }
     <div class="sly-file-tree loading">
-        <h1>Loading</h1>
+        <slot name="loading" data={fileDesc}></slot>
     </div>
 {/if}

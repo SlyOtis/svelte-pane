@@ -39,6 +39,9 @@
                     }
                 }}
         >
+            <div slot="loading">
+                <span>Loading...</span>
+            </div>
             <div slot="item-actions" class="actions">
                 <button><span class="material-symbols-outlined">delete</span></button>
             </div>

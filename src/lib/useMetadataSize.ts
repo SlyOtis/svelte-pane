@@ -3,10 +3,8 @@ class SlyGrid {
 }
 
 async function updateSize(fileTree: HTMLElement, node: HTMLElement, key: string) {
-    console.log(key)
     const cellData = SlyGrid.cells?.[key] || {width: 0, count: 0};
-    const currWidth = Math.ceil(parseFloat(window.getComputedStyle(node).width))
-    console.log(currWidth)
+    const currWidth = Math.ceil(node.offsetWidth)
     if (currWidth > cellData.width) {
         SlyGrid.cells[key] = {width: currWidth, count: cellData.count + 1};
         fileTree.style.setProperty(`--sly-tree-cell-${key}-size`, currWidth + "px")
@@ -43,8 +41,7 @@ export function metadataSizeData(node: HTMLElement) {
 }
 
 export function metadataGrid(node: HTMLElement) {
-    async function update() {
-        console.log('metagrid')
+    function update() {
         node.style.setProperty('--sly-tree-metadata-columns', 'var(--sly-tree-metadata-columns-calc)')
     }
 
