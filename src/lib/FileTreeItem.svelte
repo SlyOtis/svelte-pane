@@ -151,7 +151,7 @@
                     {/each}
                 {:else}
                     {#each fileMetadata as metadata}
-                        <li class="metadata-{metadata.key} grid" data-key={metadata.key}>
+                        <li class="metadata-{metadata.key} grid" data-metadata-key={metadata.key}>
                             <span class="value">{metadata.displayValue(metadata.value)}</span>
                         </li>
                     {/each}

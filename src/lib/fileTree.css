@@ -1,5 +1,3 @@
-@import "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200";
-
 * {
     box-sizing: border-box;
 }
@@ -18,6 +16,7 @@
     --sly-color-header: transparent;
     --sly-item-indentation: 12px;
     --sly-item-cell-gap: 8px;
+    --sly-tree-metadata-columns-calc: repeat(auto-fill, minmax(0, auto));
     --sly-tree-metadata-columns: repeat(auto-fill, minmax(0, auto));
     --scrollbar-width: 8px;
 }
@@ -30,6 +29,11 @@
     justify-content: start;
     align-items: start;
     flex-direction: column;
+}
+
+.sly-file-tree > .loading {
+    justify-content: center;
+    align-items: center;
 }
 
 .header {
@@ -87,8 +91,4 @@ li {
     align-items: center;
     width: 100%;
     height: auto;
-}
-
-.sly-file-tree [data-grid="true"] {
-    grid-template-columns: var(--sly-tree-metadata-columns) !important;
 }

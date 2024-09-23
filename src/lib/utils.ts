@@ -1,5 +1,4 @@
-import type {FileDescriptor, SelectedFile, SortGroup} from "./types";
-import * as string_decoder from "node:string_decoder";
+import type {FileDescriptor, SelectedFile, SortGroup} from "./types"
 
 function css(strings: TemplateStringsArray, ...values: any[]): string {
     return strings.reduce((result, string, i) =>
@@ -25,36 +24,6 @@ function setOnEscListener(listener: (e: KeyboardEvent) => boolean) {
         }
     };
     window.addEventListener('keydown', _listener);
-}
-
-function waitForStylesheet(href: string): Promise<void> {
-    return new Promise((resolve) => {
-        const existingLink = document.querySelector(`link[href="${href}"]`);
-        if (existingLink) {
-            // If the stylesheet is already in the document, resolve immediately
-            resolve();
-        } else {
-            // Otherwise, wait for the stylesheet to load
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    const addedNodes = mutation.addedNodes;
-                    for (let i = 0; i < addedNodes.length; i++) {
-                        const node = addedNodes[i] as HTMLLinkElement;
-                        if (node.tagName === 'LINK' && node.href.includes(href)) {
-                            observer.disconnect();
-                            node.onload = () => resolve();
-                            return;
-                        }
-                    }
-                });
-            });
-
-            observer.observe(document.head, {
-                childList: true,
-                subtree: true
-            });
-        }
-    });
 }
 
 function orderItems(items: FileDescriptor[], sortBy?: SortGroup): FileDescriptor[] {
@@ -218,7 +187,6 @@ function reduceSelectedItems(start: FileDescriptor): Array<SelectedFile> {
 export {
     css,
     setOnEscListener,
-    waitForStylesheet,
     orderItems,
     displayDateISO,
     reduceSelectedItems

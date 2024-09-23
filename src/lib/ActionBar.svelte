@@ -30,7 +30,7 @@
         <ul use:metadataSizeData>
             {#each Object.keys(fileGrouping) as groupKey}
                 {@const group = fileGrouping[groupKey]}
-                <li data-key={groupKey}>
+                <li data-metadata-key={groupKey}>
                     <button
                             class:active={$sortGroup?.key === groupKey}
                             on:click|preventDefault|stopPropagation={() => toggleSortGroup({
@@ -112,7 +112,7 @@
         align-items: center;
         justify-items: center;
         align-content: center;
-        grid-template-columns: repeat(auto-fill, minmax(0, auto));
+        grid-template-columns: repeat(auto-fit, minmax(0, auto));
         grid-template-rows: 1fr;
         width: 100%;
     }
