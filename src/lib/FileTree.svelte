@@ -18,11 +18,11 @@
     import MenuBar from "./ActionBar.svelte";
     import {orderItems, reduceSelectedItems} from "./utils";
     import SizeWatcher from "./SizeWatcher.svelte";
+    import scrollMeasure from "./useScrollMeasure";
 
     export let fileDesc: FileDescriptor;
     export let selectedFiles: SelectedFiles = {};
     export let fileGrouping: FileGrouping | undefined = undefined
-
     export let notSelectable = false;
     export let noMenuBar = false;
     export let lastItem: LastItem = null;
@@ -114,7 +114,7 @@
     <slot name="item-actions" data={fileDesc}></slot>
 </SizeWatcher>
 
-<div class="root">
+<div class="sly-file-tree" use:scrollMeasure={".inner > .files"}>
     {#if !noMenuBar}
         <div class="header">
             {#if !notSelectable && selectionCount > 0}

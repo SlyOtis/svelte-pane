@@ -11,7 +11,7 @@
     import {css, orderItems, reduceSelectedItems} from "./utils";
     import {getHighlightContext} from "./index";
     import ItemRenderer from "./ItemRenderer.svelte";
-    import CellValue from "./CellValue.svelte";
+    import {metadataSizeDynamic} from "./useMetadataSize";
 
     export let fileDesc: FileDescriptor;
     export let depth = 0;
@@ -151,7 +151,9 @@
                     {/each}
                 {:else}
                     {#each fileMetadata as metadata}
-                        <CellValue key={metadata.key} value={metadata.displayValue(metadata.value)}/>
+                        <li class="metadata-{metadata.key} grid" use:metadataSizeDynamic="{metadata.key}">
+                            <span class="value">{metadata.displayValue(metadata.value)}</span>
+                        </li>
                     {/each}
                 {/if}
             {/if}

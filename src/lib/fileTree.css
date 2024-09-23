@@ -17,9 +17,12 @@
     --sly-color-on-metadata: white;
     --sly-color-header: transparent;
     --sly-item-indentation: 12px;
+    --sly-item-cell-gap: 8px;
+    --sly-tree-metadata-columns: repeat(auto-fill, minmax(0, min-content));
+    --scrollbar-width: 8px;
 }
 
-.root {
+.sly-file-tree {
     position: relative;
     width: 100%;
     height: 100%;
@@ -33,13 +36,13 @@
     position: relative;
     width: 100%;
     height: auto;
-    padding: 6px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
     background: var(--sly-color-header);
     border-bottom: 1px solid var(--sly-color-control);
+    padding: 6px calc(12px + var(--scrollbar-width) + var(--sly-item-cell-gap)) 6px 12px;
 }
 
 ul,
@@ -57,7 +60,7 @@ li {
     align-items: start;
     width: 100%;
     height: 100%;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
 }
 

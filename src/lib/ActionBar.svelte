@@ -2,6 +2,7 @@
     import type {FileDescriptor, FileGrouping, FileTreeContext, SortGroup} from "./types";
     import {getContext} from "svelte";
     import Checkbox from "./Checkbox.svelte";
+    import {metadataSizeDynamic} from "./useMetadataSize";
 
     export let folderName: string
     export let fileGrouping: FileGrouping | undefined = undefined
@@ -29,7 +30,7 @@
         <ul>
             {#each Object.keys(fileGrouping) as groupKey}
                 {@const group = fileGrouping[groupKey]}
-                <li>
+                <li use:metadataSizeDynamic={groupKey}>
                     <button
                             class:active={$sortGroup?.key === groupKey}
                             on:click|preventDefault|stopPropagation={() => toggleSortGroup({
@@ -63,6 +64,8 @@
         position: relative;
         display: grid;
         grid-template-columns: min-content max-content minmax(0, 1fr);
+        width: 100%;
+        scrollbar-gutter: stable;
     }
 
     .root.selectable {
@@ -80,13 +83,13 @@
         padding: 0;
         margin: 0;
         color: var(--sly-color-on-content);
-        width: auto;
+        width: 100%;
     }
 
     button {
         position: relative;
         border-radius: 4px;
-        width: auto;
+        width: 100%;
         height: 24px;
         border: none;
         outline: none;
@@ -106,13 +109,16 @@
         align-items: center;
         justify-items: center;
         align-content: center;
-        grid-template-columns: repeat(auto-fit, minmax(0, auto));
+        grid-template-columns: repeat(auto-fill, minmax(0, auto));
         grid-template-rows: 1fr;
         width: 100%;
     }
 
     li {
         padding: 0 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     li:not(:last-child) {
