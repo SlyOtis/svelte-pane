@@ -5,8 +5,7 @@
     --sly-tree-item-actions-size: 0fr;
 }
 
-ul,
-li {
+.sly-file-tree-item {
     position: relative;
     list-style: none;
     width: 100%;
@@ -17,7 +16,7 @@ li {
     background: var(--sly-color-content);
 }
 
-.tree-item {
+.sly-file-tree-item-content {
     position: relative;
     display: grid;
     justify-content: center;
@@ -35,29 +34,40 @@ li {
     transition: 250ms 0ms ease-out all;
 }
 
-.tree-item:hover {
+.sly-file-tree-item-content ul, .sly-file-tree-item-content li {
+    position: relative;
+    list-style: none;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    color: var(--sly-color-on-content);
+    background: var(--sly-color-content);
+}
+
+.sly-file-tree-item-content:hover {
     color: var(--sly-color-on-hover);
     background-color: var(--sly-color-hover);
 }
 
-.tree-item:has(>.actions-transition) {
+.sly-file-tree-item-content:has(>.actions-transition) {
     transition: 250ms 0ms ease-out all;
     grid-template-columns: min-content max-content minmax(0, 1fr) var(--sly-tree-item-end-size);
 }
 
-.tree-item:hover:has(>.actions-transition) {
+.sly-file-tree-item-content:hover:has(>.actions-transition) {
     --sly-tree-item-end-size: var(--sly-tree-item-actions-size);
 }
 
-.tree-item:hover > .actions-transition {
+.sly-file-tree-item-content:hover > .actions-transition {
     opacity: 1;
 }
 
-.tree-item:not(:has(> .actions-transition)) {
+.sly-file-tree-item-content:not(:has(> .actions-transition)) {
     grid-template-columns: min-content max-content 1fr max-content;
 }
 
-.tree-item > .name {
+.sly-file-tree-item-content > .name {
     position: relative;
     display: flex;
     justify-content: start;
@@ -71,18 +81,18 @@ li {
     cursor: pointer;
 }
 
-.tree-item > .name:hover > .text {
+.sly-file-tree-item-content > .name:hover > .text {
     text-decoration: underline;
 }
 
-.tree-item > .start, .tree-item > .end {
+.sly-file-tree-item-content > .start, .tree-item > .end {
     position: relative;
     display: flex;
     justify-content: start;
     align-items: center;
 }
 
-.tree-item > .metadata {
+.sly-file-tree-item-content > .metadata {
     position: relative;
     display: flex;
     justify-content: end;
@@ -92,17 +102,17 @@ li {
     width: 100%;
 }
 
-.tree-item > .metadata:has(>.tag) {
+.sly-file-tree-item-content > .metadata:has(>.tag) {
     gap: 4px;
 }
 
-.tree-item > .metadata:has(>.grid) {
+.sly-file-tree-item-content > .metadata:has(>.grid) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(0, auto));
     grid-template-rows: 1fr;
 }
 
-.metadata > li {
+.sly-file-tree-item-content > .metadata > li {
     position: relative;
     width: 100%;
     height: 100%;
@@ -117,7 +127,7 @@ li {
     max-width: 100%;
 }
 
-.metadata > .tag {
+.sly-file-tree-item-content > .metadata > .tag {
     position: relative;
     width: auto;
     height: min-content;
@@ -127,27 +137,23 @@ li {
     border-radius: 12px;
 }
 
-.metadata > .grid {
+.sly-file-tree-item-content > .metadata > .grid {
     position: relative;
     width: auto;
     height: min-content;
     padding: 2px 6px;
 }
 
-.metadata > .grid:not(:last-of-type) {
+.sly-file-tree-item-content > .metadata > .grid:not(:last-of-type) {
     border-right: 1px solid var(--sly-color-control);
 }
 
-.metadata > .tag > .name {
+.sly-file-tree-item-content > .metadata > .tag > .name {
     font-weight: 600;
     padding-right: 4px;
 }
 
-.last-item {
-    border-bottom: 1px solid var(--sly-color-control);
-}
-
-.actions-transition {
+.sly-file-tree-item-content .actions-transition {
     position: relative;
     display: flex;
     justify-content: end;

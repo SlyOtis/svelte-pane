@@ -129,14 +129,14 @@
 
 </script>
 
-<ul class="root">
-    <li class="tree-item" style={itemStyle}>
+<ul class="sly-file-tree-item">
+    <li class="sly-file-tree-item-content" style={itemStyle}>
         <div class="start">
             {#if !notSelectable}
                 <Checkbox checked={fileDesc.selected} on:checked={onItemSelected}/>
             {/if}
         </div>
-        <button on:click={onItemClick} class="name">
+        <button class="name" on:click={onItemClick}>
             <span class="material-symbols-outlined">{icon}</span>
             <span class="text">{fileDesc.name}</span>
         </button>
@@ -188,7 +188,7 @@
             {/key}
         {/each}
         {#if lastItem && fileDesc.mimeType === "folder"}
-            <li class="last-item">
+            <li class="sly-file-tree-last-item">
                 <ItemRenderer {fileDesc} item={lastItem} depth={depth}>
                     <slot name="item-loading" slot="loading" data={fileDesc}></slot>
                     <slot name="item-no-content" slot="no-content" data={fileDesc}></slot>
@@ -202,5 +202,9 @@
     * {
         box-sizing: border-box;
         border-collapse: collapse;
+    }
+
+    .sly-file-tree-last-item {
+        border-bottom: 1px solid var(--sly-color-control);
     }
 </style>

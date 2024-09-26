@@ -1,7 +1,3 @@
-* {
-    box-sizing: border-box;
-}
-
 :root {
     --sly-color-control: gray;
     --sly-color-content: transparent;
@@ -31,12 +27,12 @@
     flex-direction: column;
 }
 
-.sly-file-tree.loading {
+.sly-file-tree-loading, .sly-file-tree-empty-list {
     justify-content: center;
     align-items: center;
 }
 
-.header {
+.sly-file-tree-header {
     position: relative;
     width: 100%;
     height: auto;
@@ -49,15 +45,7 @@
     padding: 6px calc(12px + var(--scrollbar-width) + var(--sly-item-cell-gap)) 6px 12px;
 }
 
-ul,
-li {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    color: var(--sly-color-on-content);
-}
-
-.inner {
+.sly-file-tree-inner {
     position: relative;
     display: flex;
     justify-content: start;
@@ -68,7 +56,7 @@ li {
     overflow-x: hidden;
 }
 
-.files {
+.sly-file-tree-files {
     position: relative;
     display: flex;
     justify-content: start;
@@ -77,14 +65,18 @@ li {
     height: auto;
 }
 
-.files > ul,
-.files > ul > li {
+.sly-file-tree-files > ul,
+.sly-file-tree-files > ul > li {
     position: relative;
     width: 100%;
     height: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: var(--sly-color-on-content);
 }
 
-.last-item {
+.sly-file-tree-last-item {
     position: relative;
     display: flex;
     justify-content: start;

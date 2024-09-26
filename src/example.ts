@@ -1,5 +1,10 @@
 import {v4 as uuid} from "uuid";
 import type {FileDescriptor} from "./lib";
+
+function getRandomDate(start: Date, end: Date): Date {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
 /* TEST DATA */
 export const defaultFileTree: FileDescriptor = {
     id: "92b833f9-b266-472c-a9d9-70d3ce719e92",
@@ -12,7 +17,7 @@ export const defaultFileTree: FileDescriptor = {
         },
         "created_at": {
             name: "Created At",
-            value: new Date(),
+            value: getRandomDate(new Date(2020, 0, 1), new Date()),
         }
     },
     href: "/",
@@ -30,7 +35,7 @@ export const defaultFileTree: FileDescriptor = {
                 },
                 "created_at": {
                     name: "Created At",
-                    value: new Date(),
+                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                 }
             },
             mimeType: "folder",
@@ -48,7 +53,7 @@ export const defaultFileTree: FileDescriptor = {
                         },
                         "created_at": {
                             name: "Created At",
-                            value: new Date(),
+                            value: getRandomDate(new Date(2020, 0, 1), new Date()),
                         }
                     },
                     mimeType: "folder",
@@ -66,7 +71,7 @@ export const defaultFileTree: FileDescriptor = {
                                 },
                                 "created_at": {
                                     name: "Created At",
-                                    value: new Date(),
+                                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                 }
                             },
                             href: "https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_DOCX.docx",
@@ -85,7 +90,7 @@ export const defaultFileTree: FileDescriptor = {
                                 },
                                 "created_at": {
                                     name: "Created At",
-                                    value: new Date(),
+                                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                 }
                             },
                             mimeType: "application/pdf",
@@ -103,7 +108,7 @@ export const defaultFileTree: FileDescriptor = {
                                 },
                                 "created_at": {
                                     name: "Created At",
-                                    value: new Date(),
+                                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                 }
                             },
                             href: "/documents/work/data",
@@ -121,7 +126,7 @@ export const defaultFileTree: FileDescriptor = {
                                         },
                                         "created_at": {
                                             name: "Created At",
-                                            value: new Date(),
+                                            value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                         }
                                     },
                                     mimeType: "application/pdf",
@@ -139,7 +144,7 @@ export const defaultFileTree: FileDescriptor = {
                                         },
                                         "created_at": {
                                             name: "Created At",
-                                            value: new Date(),
+                                            value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                         }
                                     },
                                     mimeType: "application/pdf",
@@ -161,7 +166,7 @@ export const defaultFileTree: FileDescriptor = {
                         },
                         "created_at": {
                             name: "Created At",
-                            value: new Date(),
+                            value: getRandomDate(new Date(2020, 0, 1), new Date()),
                         }
                     },
                     href: "/documents/personal",
@@ -179,7 +184,7 @@ export const defaultFileTree: FileDescriptor = {
                                 },
                                 "created_at": {
                                     name: "Created At",
-                                    value: new Date(),
+                                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                 }
                             },
                             mimeType: "application/pdf",
@@ -197,7 +202,7 @@ export const defaultFileTree: FileDescriptor = {
                                 },
                                 "created_at": {
                                     name: "Created At",
-                                    value: new Date(),
+                                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                 }
                             },
                             mimeType: "application/pdf",
@@ -219,7 +224,7 @@ export const defaultFileTree: FileDescriptor = {
                 },
                 "created_at": {
                     name: "Created At",
-                    value: new Date(),
+                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                 }
             },
             mimeType: "folder",
@@ -237,7 +242,7 @@ export const defaultFileTree: FileDescriptor = {
                         },
                         "created_at": {
                             name: "Created At",
-                            value: new Date(),
+                            value: getRandomDate(new Date(2020, 0, 1), new Date()),
                         }
                     },
                     mimeType: "folder",
@@ -256,7 +261,7 @@ export const defaultFileTree: FileDescriptor = {
                                 },
                                 "created_at": {
                                     name: "Created At",
-                                    value: new Date(),
+                                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                 }
                             },
                             mimeType: "image/jpeg",
@@ -275,7 +280,7 @@ export const defaultFileTree: FileDescriptor = {
                         },
                         "created_at": {
                             name: "Created At",
-                            value: new Date(),
+                            value: getRandomDate(new Date(2020, 0, 1), new Date()),
                         }
                     },
                     href: "/photos/family",
@@ -293,7 +298,7 @@ export const defaultFileTree: FileDescriptor = {
                                 },
                                 "created_at": {
                                     name: "Created At",
-                                    value: new Date(),
+                                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                 }
                             },
                             mimeType: "image/jpeg",
@@ -311,7 +316,7 @@ export const defaultFileTree: FileDescriptor = {
                                 },
                                 "created_at": {
                                     name: "Created At",
-                                    value: new Date(),
+                                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                 }
                             },
                             mimeType: "image/jpeg",
@@ -329,7 +334,7 @@ export const defaultFileTree: FileDescriptor = {
                                 },
                                 "created_at": {
                                     name: "Created At",
-                                    value: new Date(),
+                                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                 }
                             },
                             href: "/photos/family/pets",
@@ -348,7 +353,7 @@ export const defaultFileTree: FileDescriptor = {
                                         },
                                         "created_at": {
                                             name: "Created At",
-                                            value: new Date(),
+                                            value: getRandomDate(new Date(2020, 0, 1), new Date()),
                                         }
                                     },
                                     mimeType: "image/jpeg",
@@ -371,7 +376,7 @@ export const defaultFileTree: FileDescriptor = {
                 },
                 "created_at": {
                     name: "Created At",
-                    value: new Date(),
+                    value: getRandomDate(new Date(2020, 0, 1), new Date()),
                 }
             },
             href: "/software",
@@ -389,7 +394,7 @@ export const defaultFileTree: FileDescriptor = {
                         },
                         "created_at": {
                             name: "Created At",
-                            value: new Date(),
+                            value: getRandomDate(new Date(2020, 0, 1), new Date()),
                         }
                     },
                     mimeType: "image/jpeg",
@@ -407,7 +412,7 @@ export const defaultFileTree: FileDescriptor = {
                         },
                         "created_at": {
                             name: "Created At",
-                            value: new Date(),
+                            value: getRandomDate(new Date(2020, 0, 1), new Date()),
                         }
                     },
                     mimeType: "image/jpeg",
@@ -429,7 +434,7 @@ export const defaultFileTree: FileDescriptor = {
                     },
                     "created_at": {
                         name: "Created At",
-                        value: new Date(),
+                        value: getRandomDate(new Date(2020, 0, 1), new Date()),
                     }
                 },
                 mimeType: "image/jpeg",

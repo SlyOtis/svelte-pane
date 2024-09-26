@@ -117,9 +117,9 @@
 </SizeWatcher>
 
 {#if isFontsLoaded}
-    <div class="sly-file-tree" use:scrollMeasure={".inner > .files"} use:metadataGrid>
+    <div class="sly-file-tree" use:scrollMeasure={".sly-file-tree-inner > .sly-file-tree-files"} use:metadataGrid>
         {#if !noMenuBar}
-            <div class="header">
+            <div class="sly-file-tree-header">
                 {#if !notSelectable && selectionCount > 0}
                     <SelectionBar
                             on:checked={onSelectAll}
@@ -139,10 +139,10 @@
                 {/if}
             </div>
         {/if}
-        <div class="inner">
+        <div class="sly-file-tree-inner">
             {#if fileDesc?.children?.length}
                 {#key `${fileDesc.id}#${fileDesc.selected}`}
-                    <div class="files">
+                    <div class="sly-file-tree-files">
                         <ul>
                             {#each orderItems(fileDesc.children, $sortGroup) as child}
                                 {@const childDesc = {
@@ -171,7 +171,7 @@
                                 {/key}
                             {/each}
                             {#if lastItem}
-                                <li class="last-item">
+                                <li class="sly-file-tree-last-item">
                                     <ItemRenderer {fileDesc} item={lastItem}>
                                         <slot name="item-loading" slot="loading" data={fileDesc}></slot>
                                         <slot name="item-no-content" slot="no-content" data={fileDesc}></slot>
@@ -182,14 +182,20 @@
                     </div>
                 {/key}
             {:else}
-                <div class="empty-list">
+                <div class="sly-file-tree-empty-list">
                     <slot name="empty-list" data={fileDesc}></slot>
                 </div>
             {/if}
         </div>
     </div>
 {:else }
-    <div class="sly-file-tree loading">
+    <div class="sly-file-tree-loading">
         <slot name="loading" data={fileDesc}></slot>
     </div>
 {/if}
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+</style>
