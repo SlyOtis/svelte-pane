@@ -28,8 +28,6 @@
                 on:selected={onSelected}
                 bind:selectedFiles
                 noFolderClick
-                noActionsTransition
-                notSelectable
                 fileGrouping={{
                     "size": {
                         name: "File size",
