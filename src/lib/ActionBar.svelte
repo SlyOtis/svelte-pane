@@ -85,7 +85,7 @@
         list-style: none;
         padding: 0;
         margin: 0;
-        color: var(--sly-color-on-content);
+        color: var(--sly-color-on-header);
         width: 100%;
     }
 

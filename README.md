@@ -169,6 +169,7 @@ Override these CSS variables to customize the appearance:
 - `--sly-color-header`
 - `--sly-item-indentation`
 - `--sly-item-cell-gap`
+- `--sly-item-transition`
 
 ### Slots
 

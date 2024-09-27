@@ -1,20 +1,23 @@
 :root {
-    --sly-color-control: gray;
-    --sly-color-content: transparent;
-    --sly-color-no-content: gray;
-    --sly-color-hover: gray;
-    --sly-color-select: gray;
-    --sly-color-on-content: white;
-    --sly-color-on-hover: white;
-    --sly-color-on-select: white;
+    --sly-color-control: rgba(0, 110, 172, 0.2);
+    --sly-color-content: inherit;
+    --sly-color-no-content: transparent;
+    --sly-color-hover: rgba(0, 110, 172, 0.2);
+    --sly-color-select: light;
+    --sly-color-on-content: inherit;
+    --sly-color-on-hover: rgba(0, 110, 172, 1);
+    --sly-color-on-select: rgba(0, 110, 172, 1);
     --sly-color-metadata: rgba(75, 218, 237, 0.6);
     --sly-color-on-metadata: white;
     --sly-color-header: transparent;
+    --sly-color-on-header: inherit;
+    --sly-color-header-control: var(--sly-color-control);
     --sly-item-indentation: 12px;
     --sly-item-cell-gap: 8px;
     --sly-tree-metadata-columns-calc: repeat(auto-fill, minmax(0, auto));
     --sly-tree-metadata-columns: repeat(auto-fill, minmax(0, auto));
-    --scrollbar-width: 8px;
+    --sly-scrollbar-width: 8px;
+    --sly-tree-item-transition: 150ms 0ms ease-out all;
 }
 
 .sly-file-tree {
@@ -41,8 +44,9 @@
     align-items: center;
     flex-direction: row;
     background: var(--sly-color-header);
-    border-bottom: 1px solid var(--sly-color-control);
-    padding: 6px calc(12px + var(--scrollbar-width) + var(--sly-item-cell-gap)) 6px 12px;
+    border-bottom: 1px solid var(--sly-color-header-control);
+    padding: 6px calc(12px + var(--sly-scrollbar-width) + var(--sly-item-cell-gap)) 6px 12px;
+    color: var(--sly-color-on-header);
 }
 
 .sly-file-tree-inner {

@@ -27,6 +27,7 @@
                 on:selected={onSelected}
                 bind:selectedFiles
                 noFolderClick
+                noActionsTransition
                 fileGrouping={{
                     "size": {
                         name: "File size",
@@ -44,6 +45,12 @@
             </div>
             <div slot="item-actions" class="actions">
                 <button><span class="material-symbols-outlined">delete</span></button>
+                <button><span class="material-symbols-outlined">delete</span></button>
+                <button><span class="material-symbols-outlined">delete</span></button>
+                <button><span class="material-symbols-outlined">delete</span></button>
+                <button><span class="material-symbols-outlined">delete</span></button>
+                <button><span class="material-symbols-outlined">delete</span></button>
+
             </div>
             <div slot="selection-actions" class="actions">
                 <button><span class="material-symbols-outlined">delete</span></button>
