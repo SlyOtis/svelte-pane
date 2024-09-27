@@ -1,7 +1,7 @@
 {
   "name": "sly-svelte-file-tree",
   "private": false,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "A customizable file tree view component for Svelte",
   "keywords": [
