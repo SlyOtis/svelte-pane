@@ -3,21 +3,28 @@
 
     export let property = '--sly-tree-item-actions-size'; // name of the CSS variable to update
     export let defaultWidth = 0; // default width to use if slot is empty
+    export let isSizeMeasured = false
 
     let slotElement: HTMLDivElement;
-    let parentElement: HTMLElement;
+    let iconElement: HTMLElement;
     let width = defaultWidth;
-    let parentWidth = 0;
-    let parentHeight = 0;
 
     const dispatch = createEventDispatcher();
 
-    let resizeObserver: ResizeObserver;
+    const iconObserver = new ResizeObserver(entries => {
+        // TODO:: Figure out a better way to do this -.-
+        if (entries[0].contentRect.width === 48) {
+            dispatch('end-measure')
+            console.log('end measure bby')
+            isSizeMeasured = true
+        }
+    });
+
+    const slotObserver = new ResizeObserver(measureWidth)
 
     onMount(() => {
-        measureWidth();
-        setupParentObserver();
-        updateCSSVariable(width);
+        slotObserver.observe(slotElement)
+        iconObserver.observe(iconElement)
     });
 
     afterUpdate(() => {
@@ -25,49 +32,34 @@
     });
 
     onDestroy(() => {
-        if (resizeObserver) {
-            resizeObserver.disconnect();
-        }
+        iconObserver.disconnect();
+        slotObserver.disconnect();
     });
 
     function measureWidth() {
         if (slotElement) {
-            const newWidth = slotElement.offsetWidth;
+            const newWidth = slotElement.offsetWidth
             if (newWidth !== width) {
-                width = newWidth;
-                updateCSSVariable(width);
-                dispatch('widthchange', {width});
+                width = newWidth
+                updateCSSVariable(width)
             }
         } else {
             width = defaultWidth;
             updateCSSVariable(width);
-            dispatch('widthchange', {width});
         }
     }
 
     function updateCSSVariable(value: number) {
-        if (parentElement) {
-            parentElement.style.setProperty(property, `${value}px`);
+        if (slotElement.parentElement) {
+            slotElement.parentElement.style.setProperty(property, `${value}px`);
         }
     }
 
-    function setupParentObserver() {
-        if (slotElement && slotElement.parentElement) {
-            parentElement = slotElement.parentElement;
-            resizeObserver = new ResizeObserver(entries => {
-                for (let entry of entries) {
-                    if (entry.target === parentElement) {
-                        parentWidth = entry.contentRect.width;
-                        parentHeight = entry.contentRect.height;
-                        dispatch('parentresize', { width: parentWidth, height: parentHeight });
-                        measureWidth()
-                    }
-                }
-            });
-            resizeObserver.observe(parentElement);
-        }
-    }
 </script>
+
+<div class="size-watcher" bind:this={iconElement}>
+    <span class="material-symbols-outlined">deleted</span>
+</div>
 
 <div class="size-watcher" bind:this={slotElement}>
     <slot></slot>
@@ -79,9 +71,14 @@
         visibility: hidden !important;
         top: 0 !important;
         left: 0 !important;
-        width: auto !important;
+        width: min-content !important;
         height: auto !important;
         overflow: visible !important;
         contain: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: flex !important;
+        justify-content: start !important;
+        align-items: center !important;
     }
 </style>

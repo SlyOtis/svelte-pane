@@ -9,17 +9,17 @@
         FileGrouping,
         SortGroup,
         DisplayValueTransformer,
-    } from "./types";
-    import FileTreeItem from "./FileTreeItem.svelte";
-    import {setContext} from "svelte";
-    import ItemRenderer from "./ItemRenderer.svelte";
-    import {writable} from "svelte/store";
-    import SelectionBar from "./SelectionBar.svelte";
-    import MenuBar from "./ActionBar.svelte";
-    import {orderItems, reduceSelectedItems} from "./utils";
-    import SizeWatcher from "./SizeWatcher.svelte";
-    import scrollMeasure from "./useScrollMeasure";
-    import {metadataGrid} from "./useMetadataSize";
+    } from "./types"
+    import FileTreeItem from "./FileTreeItem.svelte"
+    import {setContext} from "svelte"
+    import ItemRenderer from "./ItemRenderer.svelte"
+    import {writable} from "svelte/store"
+    import SelectionBar from "./SelectionBar.svelte"
+    import MenuBar from "./MenuBar.svelte"
+    import {orderItems, reduceSelectedItems} from "./utils"
+    import SizeWatcher from "./SizeWatcher.svelte"
+    import scrollMeasure from "./useScrollMeasure"
+    import {metadataGrid} from "./useMetadataSize"
 
     export let fileDesc: FileDescriptor;
     export let selectedFiles: SelectedFiles = {};
@@ -31,17 +31,12 @@
     export let noIndentation = false
     export let noActionsTransition = false
     export let metadataAsTags = false
+    export let isLoading = false
 
-    let isFontsLoaded = false
+    let isSizeMeasured = false
 
     const expandedItems = writable<Array<string>>([])
     const sortGroup = writable<SortGroup | undefined>(undefined)
-
-    function onFontsLoaded() {
-        document.fonts.ready.then(() => {
-            isFontsLoaded = true
-        })
-    }
 
     function selectItems(...items: Array<SelectedFile>) {
         for (const item of items) {
@@ -103,20 +98,21 @@
     $: displayKeys = fileGrouping ? Object.keys(fileGrouping) : []
 </script>
 
+<!--<StyleLoader on:styles-loaded={() => isStyleLoaded = true}/>-->
+
 <svelte:head>
     <link
             rel="stylesheet"
             type="text/css"
             href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-            on:load={onFontsLoaded}
     >
 </svelte:head>
 
-<SizeWatcher>
+<SizeWatcher bind:isSizeMeasured>
     <slot name="item-actions" data={fileDesc}></slot>
 </SizeWatcher>
 
-{#if isFontsLoaded}
+{#if isSizeMeasured && !isLoading}
     <div class="sly-file-tree" use:scrollMeasure={".sly-file-tree-inner > .sly-file-tree-files"} use:metadataGrid>
         {#if !noMenuBar}
             <div class="sly-file-tree-header">
@@ -135,6 +131,7 @@
                             {fileGrouping}
                             {notSelectable}
                             {fileDesc}
+                            {noActionsTransition}
                     />
                 {/if}
             </div>

@@ -53,9 +53,6 @@
             {/each}
         </ul>
     {/if}
-    {#if noActionsTransition}
-        <div class="transition-placeholder"></div>
-    {/if}
 </div>
 
 <style>
@@ -76,7 +73,7 @@
     }
 
     .root.no-action-transition {
-        grid-template-columns: min-content max-content minmax(0, 1fr) var(--sly-tree-item-actions-size);
+        padding-right: var(--sly-tree-item-actions-size);
     }
 
     ul,
@@ -163,5 +160,6 @@
 
     .active > .material-symbols-outlined {
         opacity: 1;
+        color: inherit;
     }
 </style>

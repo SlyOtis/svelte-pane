@@ -83,7 +83,7 @@
     text-decoration: underline;
 }
 
-.sly-file-tree-item-content > .start, .tree-item > .end {
+.sly-file-tree-item-content > .start, .sly-file-tree-item-content > .end {
     position: relative;
     display: flex;
     justify-content: start;

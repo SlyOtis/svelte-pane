@@ -179,6 +179,8 @@
                             {noFolderClick}
                             {noIndentation}
                             {displayKeys}
+                            {noActionsTransition}
+                            {metadataAsTags}
                     >
                         <slot name="item-loading" slot="item-loading" data={fileDesc}></slot>
                         <slot name="item-actions" slot="item-actions" data={fileDesc}></slot>
