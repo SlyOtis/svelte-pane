@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      fontfaceobserver:
-        specifier: ^2.3.0
-        version: 2.3.0
       uuid:
         specifier: ^10.0.0
         version: 10.0.0
@@ -24,9 +21,6 @@ importers:
       '@tsconfig/svelte':
         specifier: ^5.0.4
         version: 5.0.4
-      '@types/fontfaceobserver':
-        specifier: ^2.1.3
-        version: 2.1.3
       '@types/node':
         specifier: ^22.5.4
         version: 22.5.4
@@ -386,9 +380,6 @@ packages:
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
-  '@types/fontfaceobserver@2.1.3':
-    resolution: {integrity: sha512-AewfFg9iUfoUZ4EfKxhBaEuzY2TUS+Hm0vXWMPcJRY7C4wC9XtW20lPVYHTcWVZYq1uthCEa5APl7RAX7jr2Xg==}
-
   '@types/node@22.5.4':
     resolution: {integrity: sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==}
 
@@ -563,9 +554,6 @@ packages:
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
-
-  fontfaceobserver@2.3.0:
-    resolution: {integrity: sha512-6FPvD/IVyT4ZlNe7Wcn5Fb/4ChigpucKYSvD6a+0iMoLn2inpo711eyIcKjmDtE5XNcgAkSH9uN/nfAeZzHEfg==}
 
   fs-extra@7.0.1:
     resolution: {integrity: sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==}
@@ -1260,8 +1248,6 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
-  '@types/fontfaceobserver@2.1.3': {}
-
   '@types/node@22.5.4':
     dependencies:
       undici-types: 6.19.8
@@ -1461,8 +1447,6 @@ snapshots:
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
-
-  fontfaceobserver@2.3.0: {}
 
   fs-extra@7.0.1:
     dependencies:

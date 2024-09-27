@@ -98,8 +98,6 @@
     $: displayKeys = fileGrouping ? Object.keys(fileGrouping) : []
 </script>
 
-<!--<StyleLoader on:styles-loaded={() => isStyleLoaded = true}/>-->
-
 <svelte:head>
     <link
             rel="stylesheet"
