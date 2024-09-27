@@ -11,6 +11,7 @@
         // TODO:: Get selected file from URL
         // window.location.href = `/inbox${e.detail.path}`
         selectFileDesc = e.detail
+        alert(e.detail)
     }
 
     function onSelected(e: CustomEvent<FileDescriptor>) {
@@ -28,6 +29,7 @@
                 bind:selectedFiles
                 noFolderClick
                 noActionsTransition
+                notSelectable
                 fileGrouping={{
                     "size": {
                         name: "File size",

@@ -63,13 +63,14 @@
     .root {
         position: relative;
         display: grid;
-        grid-template-columns: min-content max-content minmax(0, 1fr);
+        grid-template-columns: max-content minmax(0, 1fr);
         width: 100%;
         scrollbar-gutter: stable;
     }
 
     .root.selectable {
         gap: 8px;
+        grid-template-columns: min-content max-content minmax(0, 1fr);
     }
 
     .root.no-action-transition {
