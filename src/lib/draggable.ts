@@ -83,7 +83,6 @@ function draggable(
         document.body.style.cursor = "";
 
         const gridEl = getGridEl(node, gridSelector)
-
         const gridIndex = getGridIndex(node, gridEl);
         const endCor = getGridTemplate(gridEl, anchor)[gridIndex]
 
